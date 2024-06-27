@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "crippled",
+  "version": "${version}",
+  "name": "crippled",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/ivangeevo/crippled"
+  },
+  "license": "MIT",
+  "icon": "assets/crippled/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.ivangeevo.crippled.client.CrippledModClient"
+    ],
+    "main": [
+      "org.ivangeevo.crippled.CrippledMod"
+    ]
+  },
+  "mixins": [
+    "crippled.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
