@@ -22,27 +22,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin
 {
-
-    @Shadow public abstract TextRenderer getTextRenderer();
-
     @Shadow private int scaledWidth;
-
     @Shadow private int scaledHeight;
-
-    @Shadow @Final private Random random;
-
-    @Shadow @Final private MinecraftClient client;
-
-    @Shadow @Final private static Identifier ICONS;
-
-    
+    @Shadow public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "render", at = @At("TAIL"))
     private void injectedRender(DrawContext context, float tickDelta, CallbackInfo ci)
     {
         PlayerEntity player = MinecraftClient.getInstance().player;
 
-        if (player != null) {
+        if (player != null)
+        {
             HungerManager hungerManager = player.getHungerManager();
             int foodLevel = hungerManager.getFoodLevel();
             float healthLevel = player.getHealth();
