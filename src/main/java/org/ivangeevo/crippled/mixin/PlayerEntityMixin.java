@@ -171,14 +171,11 @@ public abstract class PlayerEntityMixin extends LivingEntity
 
         int nauseaTicks = 100;
 
-        if (foodLevel <= 0)
+        if (foodLevel <= 0 && this.age % nauseaTicks == 0)
         {
-            if (this.age % nauseaTicks == 0)
+            if ((PlayerEntity)(Object)this instanceof ServerPlayerEntity)
             {
-                if ((PlayerEntity)(Object)this instanceof ServerPlayerEntity)
-                {
-                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true));
-                }
+                this.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true));
 
                 //this.damage(this.getDamageSources().starve(),1);
             }
