@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -96,7 +97,7 @@ public abstract class PlayerEntityMixin extends LivingEntity
             case 7:
             case 8: speedMultiplier *= 1.0f; break; // Peckish
             /** Additional effects for peckish **/
-            //TODO: fix sprinting to false in another place
+            //TODO: set sprinting to false in another place
             //player.setSprinting(false); // Loss of sprint
 
             default: break;
@@ -174,7 +175,10 @@ public abstract class PlayerEntityMixin extends LivingEntity
         {
             if (this.age % nauseaTicks == 0)
             {
-                this.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true));
+                if ((PlayerEntity)(Object)this instanceof ServerPlayerEntity)
+                {
+                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true));
+                }
 
                 //this.damage(this.getDamageSources().starve(),1);
             }
