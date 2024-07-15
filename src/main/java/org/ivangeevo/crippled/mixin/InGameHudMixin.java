@@ -98,8 +98,8 @@ public abstract class InGameHudMixin
         Text statusText = Text.translatable(text);
 
         // Calculate the position of the hunger bar
-        int hungerBarX = this.scaledWidth / 2 + 91;
-        int hungerBarY = this.scaledHeight - 39;
+        int hungerBarX = context.getScaledWindowWidth() / 2 + 91;
+        int hungerBarY = context.getScaledWindowHeight() - 39;
 
         // Adjust the X and Y positions to render above the hunger bar
         int textX = hungerBarX - (textRenderer.getWidth(statusText) / 2) - 20; // 20 pixels to the left of the hunger bar
