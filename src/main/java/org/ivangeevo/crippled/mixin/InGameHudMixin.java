@@ -31,7 +31,7 @@ public abstract class InGameHudMixin
     {
         PlayerEntity player = MinecraftClient.getInstance().player;
 
-        if (player != null)
+        if (player != null && !player.getAbilities().creativeMode)
         {
             HungerManager hungerManager = player.getHungerManager();
             int foodLevel = hungerManager.getFoodLevel();
