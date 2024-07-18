@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "crippled",
+  "id": "im-movens",
   "version": "${version}",
-  "name": "crippled",
+  "name": "Im 'movens",
   "description": "",
   "authors": [],
   "contact": {
-    "repo": "https://github.com/ivangeevo/crippled"
+    "repo": "https://github.com/ivangeevo/im-movens"
   },
   "license": "MIT",
-  "icon": "assets/crippled/icon.png",
+  "icon": "assets/im-movens/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "org.ivangeevo.crippled.client.CrippledModClient"
+      "org.ivangeevo.immovens.client.ImMovensModClient"
     ],
     "main": [
-      "org.ivangeevo.crippled.CrippledMod"
+      "org.ivangeevo.immovens.ImMovensMod"
     ]
   },
   "mixins": [
-    "crippled.mixins.json"
+    "im-movens.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

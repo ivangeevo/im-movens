@@ -1,8 +1,8 @@
-package org.ivangeevo.crippled.client;
+package org.ivangeevo.immovens.client;
 
 import net.fabricmc.api.ClientModInitializer;
 
-public class CrippledModClient implements ClientModInitializer
+public class ImMovensModClient implements ClientModInitializer
 {
     @Override
     public void onInitializeClient() {
