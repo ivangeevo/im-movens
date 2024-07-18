@@ -1,4 +1,4 @@
-package org.ivangeevo.crippled.mixin;
+package org.ivangeevo.immovens.mixin;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
