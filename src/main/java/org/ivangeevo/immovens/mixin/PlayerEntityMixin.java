@@ -53,7 +53,6 @@ public abstract class PlayerEntityMixin extends LivingEntity
             default: break;
         }
 
-        // Logic for modifying speed based on health level
         switch ((int) healthLevel)
         {
             case 0,1:
@@ -70,7 +69,8 @@ public abstract class PlayerEntityMixin extends LivingEntity
         // Calculate the modified return value
         float modifiedSpeed = originalSpeed * speedMultiplier;
 
-        cir.setReturnValue(modifiedSpeed); // Set the modified return value
+        // Set the modified return value
+        cir.setReturnValue(modifiedSpeed);
     }
 
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)

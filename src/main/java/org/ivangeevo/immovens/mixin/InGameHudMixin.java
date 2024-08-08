@@ -77,19 +77,19 @@ public abstract class InGameHudMixin
 
             if (!healthStatus.isEmpty())
             {
-                renderWellbeingStatusText(context, healthStatus);
+                renderStatusText(context, healthStatus);
             }
 
             if (!foodStatus.isEmpty())
             {
-                renderWellbeingStatusText(context, foodStatus);
+                renderStatusText(context, foodStatus);
             }
         }
     }
 
 
     @Unique
-    private void renderWellbeingStatusText(DrawContext context, String text)
+    private void renderStatusText(DrawContext context, String text)
     {
         TextRenderer textRenderer = getTextRenderer();
         Text statusText = Text.translatable(text);
