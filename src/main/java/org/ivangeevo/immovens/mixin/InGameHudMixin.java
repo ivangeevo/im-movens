@@ -79,7 +79,8 @@ public abstract class InGameHudMixin
             {
                 renderWellbeingStatusText(context, healthStatus);
             }
-            else if (!foodStatus.isEmpty())
+
+            if (!foodStatus.isEmpty())
             {
                 renderWellbeingStatusText(context, foodStatus);
             }
