@@ -4,8 +4,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,12 +21,21 @@ public abstract class InGameHudMixin
 {
     @Shadow public abstract TextRenderer getTextRenderer();
 
+    //TODO: maybe a better way to inject the status effects text is with the LayeredDrawer
+    /**
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void injectedConstructor(MinecraftClient client, CallbackInfo ci)
+    {
+
+    }
+     **/
+
     @Inject(method = "render", at = @At("TAIL"))
-    private void injectedRender(DrawContext context, float tickDelta, CallbackInfo ci)
+    private void injectedRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci)
     {
         PlayerEntity player = MinecraftClient.getInstance().player;
 
-        if (player != null && !player.getAbilities().creativeMode)
+        if (/** player != null && **/ !player.getAbilities().creativeMode)
         {
             HungerManager hungerManager = player.getHungerManager();
             int foodLevel = hungerManager.getFoodLevel();
