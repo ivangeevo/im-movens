@@ -46,9 +46,10 @@ public class PlayerEffectsManager {
 
     private void updateSpeedAttributes(PlayerEntity player) {
         EntityAttributeInstance movementSpeedAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        EntityAttributeInstance blockBreakSpeedAttribute = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
         EntityAttributeInstance attackDamageAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 
-        if (movementSpeedAttribute != null && !player.isCreative())
+        if (movementSpeedAttribute != null)
         {
             // Get the player's current hunger and health states
             StatusEffectUtils.HungerState newHungerState = StatusEffectUtils.HungerState.fromFoodLevel(player.getHungerManager().getFoodLevel());
@@ -59,6 +60,11 @@ public class PlayerEffectsManager {
             if (newHungerState != currentHungerState) {
                 movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
                 movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
+
+                if (player.isCreative()) {
+                    movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
+                }
+
                 currentHungerState = newHungerState;
             }
 
@@ -69,16 +75,43 @@ public class PlayerEffectsManager {
                 currentHealthState = newHealthState;
             }
 
-            // TODO: Add attack power modifier for the health states
-            // Update AttackPower modifier
-            /**
-            if (newAttackPower != currentAttackPower) {
-                attackDamageAttribute.removeModifier(currentAttackPower.getSpeedModifier());
-                attackDamageAttribute.addPersistentModifier(newAttackPower.getSpeedModifier());
-                currentAttackPower = newAttackPower;
-            }
-             **/
         }
+
+        // TODO: Fix  the block breaking speed attack power modifier to actually apply
+        /**
+        if (blockBreakSpeedAttribute != null)
+        {
+            // Get the player's current hunger and health states
+            StatusEffectUtils.HungerState newHungerState = StatusEffectUtils.HungerState.fromFoodLevel(player.getHungerManager().getFoodLevel());
+            StatusEffectUtils.HealthState newHealthState = StatusEffectUtils.HealthState.fromHealthLevel(player.getHealth());
+            StatusEffectUtils.AttackPower newAttackPower = StatusEffectUtils.AttackPower.fromHealthLevel(player.getHealth());
+
+            // Update HungerState modifier
+            if (newHungerState != currentHungerState) {
+                blockBreakSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
+                blockBreakSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
+                currentHungerState = newHungerState;
+            }
+
+            // Update HealthState modifier
+            if (newHealthState != currentHealthState) {
+                blockBreakSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
+                blockBreakSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
+                currentHealthState = newHealthState;
+            }
+        }
+         **/
+
+        // TODO: Add attack power modifier for the health states
+        // Update AttackPower modifier
+        /**
+         if (newAttackPower != currentAttackPower) {
+         attackDamageAttribute.removeModifier(currentAttackPower.getSpeedModifier());
+         attackDamageAttribute.addPersistentModifier(newAttackPower.getSpeedModifier());
+         currentAttackPower = newAttackPower;
+         }
+         **/
+
     }
 
     private void applyNauseaEffect(PlayerEntity player)

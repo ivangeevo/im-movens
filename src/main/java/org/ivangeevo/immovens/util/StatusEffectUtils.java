@@ -84,24 +84,24 @@ public class StatusEffectUtils {
     }
 
     public enum AttackPower {
-        DYING(0.25f),
-        CRIPPLED(0.5f),
-        WOUNDED(0.75f),
-        INJURED(1.0f),
-        HEALTHY(1.0f);
+        DYING(-1),
+        CRIPPLED(0),
+        WOUNDED(1),
+        INJURED(2),
+        HEALTHY(2);
 
-        private final EntityAttributeModifier speedModifier;
+        private final EntityAttributeModifier damageModifier;
 
-        AttackPower(float speedMultiplier) {
-            this.speedModifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, "attack_damage_speed_modifier"),
-                    speedMultiplier - 1.0f,
-                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+        AttackPower(int value) {
+            this.damageModifier = new EntityAttributeModifier(
+                    Identifier.of(ImMovensMod.MOD_ID, "attack_damage_modifier"),
+                    value,
+                    EntityAttributeModifier.Operation.ADD_VALUE
             );
         }
 
-        public EntityAttributeModifier getSpeedModifier() {
-            return speedModifier;
+        public EntityAttributeModifier getDamageModifier() {
+            return damageModifier;
         }
 
         public static AttackPower fromHealthLevel(float healthLevel) {
