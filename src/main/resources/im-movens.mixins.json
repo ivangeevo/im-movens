@@ -2,9 +2,10 @@
   "required": true,
   "minVersion": "0.8",
   "package": "org.ivangeevo.immovens.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
     "InGameHudMixin"
