@@ -30,7 +30,7 @@ public abstract class InGameHudMixin
     }
      **/
 
-    @Inject(method = "render", at = @At("TAIL"))
+    @Inject(method = "render", at = @At("HEAD"))
     private void injectedRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci)
     {
         PlayerEntity player = MinecraftClient.getInstance().player;
