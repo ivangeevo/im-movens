@@ -102,6 +102,7 @@ public class PlayerEffectsManager {
         }
          **/
 
+
         // TODO: Add attack power modifier for the health states
         // Update AttackPower modifier
         /**
