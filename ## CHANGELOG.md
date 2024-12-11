@@ -1,3 +1,10 @@
+## v1.4 (planned)
+
++ add support for tough environment so the air bar moves upwards a bit (update it in "in the gloom" with this as well, so they don't render over each other)
+
+## v1.3
++ Added conditions to account for the air bar displaying and move the status text appropriately
+
 ## v1.2
 + Changed mod id from "im-movens" to "im_movens"
 + Improved code for better compatibility with other mods.
