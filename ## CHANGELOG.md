@@ -4,6 +4,7 @@
 
 ## v1.3
 + Added conditions to account for the air bar displaying and move the status text appropriately
++ Updated the mod to Fabric API 0.110.0
 
 ## v1.2
 + Changed mod id from "im-movens" to "im_movens"
