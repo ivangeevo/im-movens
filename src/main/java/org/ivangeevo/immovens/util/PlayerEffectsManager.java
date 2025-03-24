@@ -8,6 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.logging.Logger;
+
 public class PlayerEffectsManager {
 
     private static final PlayerEffectsManager INSTANCE = new PlayerEffectsManager();
@@ -39,9 +41,14 @@ public class PlayerEffectsManager {
         this.applySlowHealing(player);
     }
 
+    // Determines if player should be affected by debuffs
+    public boolean shouldBeAffected(PlayerEntity player) {
+        return (!player.isCreative() && !player.isSpectator());
+    }
+
     public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
     {
-        if (player.getHungerManager().getFoodLevel() < 4 || player.getHealth() <= 4) { ci.cancel(); }
+        if ((player.getHungerManager().getFoodLevel() < 4 || player.getHealth() <= 4) && shouldBeAffected(player)) { ci.cancel(); }
     }
 
     private void updateSpeedAttributes(PlayerEntity player) {
@@ -61,10 +68,6 @@ public class PlayerEffectsManager {
                 movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
                 movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
 
-                if (player.isCreative()) {
-                    movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
-                }
-
                 currentHungerState = newHungerState;
             }
 
@@ -72,7 +75,20 @@ public class PlayerEffectsManager {
             if (newHealthState != currentHealthState) {
                 movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
                 movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
+
                 currentHealthState = newHealthState;
+            }
+
+            // Revert if player shouldn't be affected at this time
+            if (!shouldBeAffected(player)) {
+                movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
+                movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
+            } else if (
+                !movementSpeedAttribute.hasModifier(currentHealthState.getSpeedModifier().id()) ||
+                !movementSpeedAttribute.hasModifier(currentHungerState.getSpeedModifier().id()) &&
+                shouldBeAffected(player)) {
+                movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
+                movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
             }
 
         }

@@ -2,12 +2,14 @@ package org.ivangeevo.immovens.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.GameMode;
 import org.ivangeevo.immovens.util.PlayerEffectsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin
@@ -21,5 +23,4 @@ public abstract class ServerPlayerEntityMixin
     {
         effectsManager.onServerTick(playerEntity);
     }
-
 }
