@@ -22,8 +22,11 @@ public abstract class InGameHudMixin {
     @Shadow
     public abstract TextRenderer getTextRenderer();
 
-    @Inject(method = "render", at = @At("HEAD"))
-    private void injectedRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+    @Unique
+    private boolean isRenderingFood = false;
+
+    @Inject(method = "renderStatusBars", at = @At("HEAD"))
+    private void injectedRender(DrawContext context, CallbackInfo ci) {
         PlayerEntity player = MinecraftClient.getInstance().player;
 
         if (player != null && !player.getAbilities().creativeMode) {
@@ -49,36 +52,48 @@ public abstract class InGameHudMixin {
                 case 9, 10 -> healthStatus = "Hurt";
             }
 
-            if (!healthStatus.isEmpty()) {
-                renderWellbeingStatusText(context, healthStatus, player);
-            } else if (!foodStatus.isEmpty()) {
-                renderWellbeingStatusText(context, foodStatus, player);
-            }
+            renderWellbeingStatusText(context, healthStatus, foodStatus, player);
         }
     }
 
+    @Inject(method = "renderFood", at = @At("TAIL"))
+    private void renderFoodCheck(DrawContext context, PlayerEntity player, int top, int right, CallbackInfo ci) {
+        // We're rendering food, so set this variable
+        isRenderingFood = true;
+    }
+
     @Unique
-    private void renderWellbeingStatusText(DrawContext context, String text, PlayerEntity player) {
+    private void renderWellbeingStatusText(DrawContext context, String healthStatus, String foodStatus, PlayerEntity player) {
         TextRenderer textRenderer = getTextRenderer();
-        Text statusText = Text.translatable(text);
+        Text healthStatusText = Text.translatable(healthStatus);
+        Text foodStatusText = Text.translatable(foodStatus);
 
         // Calculate the position of the hunger bar
         int hungerBarX = context.getScaledWindowWidth() / 2 + 91;  // Center of the hunger bar
         int hungerBarY = context.getScaledWindowHeight() - 39; // Hunger bar position vertically
 
         // Adjust the X position to render the text centered over the hunger bar
-        int textX = hungerBarX - (textRenderer.getWidth(statusText) / 2) - 20; // 20 pixels to the left of the hunger bar
+        int fStatusX = hungerBarX - textRenderer.getWidth(foodStatusText); // 20 pixels to the left of the hunger bar
+        int hStatusX = hungerBarX - textRenderer.getWidth(healthStatusText);
 
         // Adjust the Y position based on whether the player is underwater or TAN mod is loaded
-        int textY = hungerBarY - 10; // Default Y position (above the hunger bar)
+        int textY = isRenderingFood ? hungerBarY - 10 : hungerBarY; // Default Y position (above the hunger bar)
 
-        // Adjust the Y position if the breath bar is displaying
-        if (player.getAir() != player.getMaxAir() /**|| FabricLoader.getInstance().isModLoaded("toughasnails") **/) {
+        // Adjust the Y position under certain conditions
+        if (
+                (player.getAir() != player.getMaxAir()) || // Player is underwater
+                (player.getArmor() > 0 && !isRenderingFood) // Player is wearing armor and hunger is not displayed
+        ) {
             textY -= 10; // Move the text higher if the player is underwater
         }
 
-        // Draw the status text
-        context.drawText(textRenderer, statusText, textX, textY, 0xFFFFFFFF, true);
+        // Draw both status text
+        context.drawText(textRenderer, healthStatusText, hStatusX, textY, 0xFFFFFFFF, true);
+        if (isRenderingFood) // Only render food status if food is being rendered
+            context.drawText(textRenderer, foodStatusText, fStatusX, (!healthStatus.isEmpty() ? textY - 10 : textY), 0xFFFFFFFF, true);
+
+        // Set render booleans to false in-case of runtime config changes
+        isRenderingFood = false;
     }
 }
 
