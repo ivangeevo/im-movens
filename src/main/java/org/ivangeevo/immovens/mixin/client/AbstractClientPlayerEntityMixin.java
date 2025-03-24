@@ -7,6 +7,7 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.ivangeevo.immovens.ImMovensMod;
 import org.ivangeevo.immovens.client.FieldOfViewHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +23,8 @@ abstract class AbstractClientPlayerEntityMixin extends PlayerEntity {
     @ModifyVariable(method = "getFovMultiplier", at = @At(value = "STORE", ordinal = 2), ordinal = 0)
     public float getFieldOfViewModifier(float fovModifier) {
         PlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null) {
-            return FieldOfViewHelper.getFieldOfViewModifierWithoutBlockSpeed(this);
+        if (player != null && ImMovensMod.getInstance().settings.isFOVScalingDisabled()) {
+            return FieldOfViewHelper.getFieldOfViewModifierWithoutSpeed(this);
         } else {
             return fovModifier;
         }

@@ -1,0 +1,8 @@
+{
+  "config.immovens.category.general": "General",
+  "config.immovens.fov_scaling": "Disable FOV Scaling",
+  "config.immovens.pain_sounds": "Pain Sounds",
+  "config.immovens.tooltip.fov_scaling": "Accessibility option that disables FOV from changing under status effects",
+  "config.immovens.tooltip.pain_sounds": "Enables pain sounds when health is very low, emulating behavior from pre-CE BTW",
+  "title.immovens.config": "Im'movens Configuration Menu"
+}

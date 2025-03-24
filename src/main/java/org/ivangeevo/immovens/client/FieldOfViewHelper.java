@@ -11,6 +11,8 @@ import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.ArrayUtils;
 import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.immovens.config.ImMovensConfig;
+import org.ivangeevo.immovens.config.ModSettings;
 
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +22,7 @@ import java.util.stream.Stream;
 
 public class FieldOfViewHelper {
 
-    public static float getFieldOfViewModifierWithoutBlockSpeed(PlayerEntity player) {
+    public static float getFieldOfViewModifierWithoutSpeed(PlayerEntity player) {
         float fovModifier = player.getAbilities().flying ? 1.1F : 1.0F;
         EntityAttributeInstance attribute = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if (attribute != null) {
