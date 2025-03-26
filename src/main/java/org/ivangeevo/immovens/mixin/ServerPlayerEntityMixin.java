@@ -1,7 +1,15 @@
 package org.ivangeevo.immovens.mixin;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.random.Random;
+import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.immovens.client.ImMovensSound;
 import org.ivangeevo.immovens.util.PlayerEffectsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,6 +23,12 @@ public abstract class ServerPlayerEntityMixin
     @Unique private PlayerEntity playerEntity = (PlayerEntity) (Object) this;
 
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void calcDist(MinecraftServer server, ServerWorld world, GameProfile profile,
+                         SyncedClientOptions clientOptions, CallbackInfo ci) {
+        effectsManager.setNextDistToHurtSound(playerEntity);
+    }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void applyMovementEffectsOnTick(CallbackInfo info)

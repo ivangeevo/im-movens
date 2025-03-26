@@ -3,13 +3,15 @@
   "id": "im_movens",
   "version": "${version}",
   "name": "Im 'movens",
-  "description": "",
-  "authors": [],
+  "description": "A mod that reworks the exhaustion system by adding penalties for poor health/hunger management.",
+  "authors": [
+    "ivangeevo"
+  ],
   "contact": {
     "repo": "https://github.com/ivangeevo/im-movens"
   },
-  "license": "MIT",
-  "icon": "assets/im-movens/icon.png",
+  "license": "CC-BY-4.0",
+  "icon": "assets/im_movens/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -17,6 +19,9 @@
     ],
     "main": [
       "org.ivangeevo.immovens.ImMovensMod"
+    ],
+    "modmenu": [
+      "org.ivangeevo.immovens.config.ImMovensConfig"
     ]
   },
   "mixins": [

@@ -41,13 +41,14 @@ public class StatusEffectUtils {
 
 
         public static HungerState fromFoodLevel(int foodLevel) {
-            return switch (foodLevel) {
+            return (ImMovensMod.getSettings().isHungerPenaltiesEnabled()) ?
+            switch (foodLevel) {
                 case 0, 1, 2 -> STARVING;
                 case 3, 4 -> FAMISHED;
                 case 5, 6 -> HUNGRY;
                 case 7, 8 -> PECKISH;
                 default -> WELL_FED;
-            };
+            } : WELL_FED;
         }
     }
 
@@ -73,13 +74,14 @@ public class StatusEffectUtils {
         }
 
         public static HealthState fromHealthLevel(float healthLevel) {
-            return switch ((int) healthLevel) {
+            return (ImMovensMod.getSettings().isHealthPenaltiesEnabled()) ?
+            switch ((int) healthLevel) {
                 case 0, 1, 2 -> DYING;
                 case 3, 4 -> CRIPPLED;
                 case 5, 6 -> WOUNDED;
                 case 7, 8, 9, 10 -> INJURED;
                 default -> HEALTHY;
-            };
+            } : HEALTHY;
         }
     }
 
@@ -90,18 +92,18 @@ public class StatusEffectUtils {
         INJURED(2),
         HEALTHY(2);
 
-        private final EntityAttributeModifier damageModifier;
+        private final EntityAttributeModifier attackModifier;
 
         AttackPower(int value) {
-            this.damageModifier = new EntityAttributeModifier(
+            this.attackModifier = new EntityAttributeModifier(
                     Identifier.of(ImMovensMod.MOD_ID, "attack_damage_modifier"),
                     value,
                     EntityAttributeModifier.Operation.ADD_VALUE
             );
         }
 
-        public EntityAttributeModifier getDamageModifier() {
-            return damageModifier;
+        public EntityAttributeModifier getAttackModifier() {
+            return attackModifier;
         }
 
         public static AttackPower fromHealthLevel(float healthLevel) {

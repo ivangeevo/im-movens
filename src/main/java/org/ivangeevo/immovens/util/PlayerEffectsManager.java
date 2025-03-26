@@ -6,6 +6,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.random.Random;
+import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.immovens.client.ImMovensSound;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class PlayerEffectsManager {
@@ -16,6 +20,14 @@ public class PlayerEffectsManager {
     private StatusEffectUtils.HealthState currentHealthState = StatusEffectUtils.HealthState.HEALTHY;
     private StatusEffectUtils.AttackPower currentAttackPower = StatusEffectUtils.AttackPower.HEALTHY;
 
+    /**
+     * Block distance threshold for pain sound to occur
+     */
+    private float distToNextHurtSound = 0.0f;
+    /**
+     * Health threshold for pain sound to occur
+     */
+    private final float THRESHOLD_FOR_NOISE = 6.0f;
     private static final int NAUSEA_TICKS = 100;
 
     private PlayerEffectsManager() {}
@@ -37,11 +49,20 @@ public class PlayerEffectsManager {
         this.applyBlindnessEffect(player);
         this.updateSpeedAttributes(player);
         this.applySlowHealing(player);
+        this.doHurtNoise(player);
+    }
+
+    // Determines if player should be affected by debuffs
+    public boolean shouldBeAffected(PlayerEntity player) {
+        return (!player.isCreative() && !player.isSpectator() && !player.isDead());
     }
 
     public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
     {
-        if (player.getHungerManager().getFoodLevel() < 4 || player.getHealth() <= 4) { ci.cancel(); }
+        if ((player.getHungerManager().getFoodLevel() < 4 && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
+            || (player.getHealth() <= 4 && ImMovensMod.getSettings().isHealthPenaltiesEnabled())
+            && shouldBeAffected(player))
+        { ci.cancel(); }
     }
 
     private void updateSpeedAttributes(PlayerEntity player) {
@@ -60,10 +81,7 @@ public class PlayerEffectsManager {
             if (newHungerState != currentHungerState) {
                 movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
                 movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
-
-                if (player.isCreative()) {
-                    movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
-                }
+                setNextDistToHurtSound(player);
 
                 currentHungerState = newHungerState;
             }
@@ -72,7 +90,20 @@ public class PlayerEffectsManager {
             if (newHealthState != currentHealthState) {
                 movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
                 movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
+                setNextDistToHurtSound(player);
+
                 currentHealthState = newHealthState;
+            }
+
+            // Revert if player shouldn't be affected at this time
+            if (!shouldBeAffected(player)) {
+                movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
+                movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
+            } else if (shouldBeAffected(player)) {
+                if (!movementSpeedAttribute.hasModifier(currentHealthState.getSpeedModifier().id()))
+                    movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
+                if (!movementSpeedAttribute.hasModifier(currentHungerState.getSpeedModifier().id()))
+                    movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
             }
 
         }
@@ -117,7 +148,9 @@ public class PlayerEffectsManager {
 
     private void applyNauseaEffect(PlayerEntity player)
     {
-        if (player.getHungerManager().getFoodLevel() <= 0 && player.age % NAUSEA_TICKS == 0)
+        if (player.getHungerManager().getFoodLevel() <= 0
+                && player.age % NAUSEA_TICKS == 0
+                && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
         {
             player.addStatusEffect(
                     new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true)
@@ -127,7 +160,10 @@ public class PlayerEffectsManager {
 
     private void applyBlindnessEffect(PlayerEntity player)
     {
-        if (player instanceof ServerPlayerEntity && player.getHealth() <= 2)
+        if (player instanceof ServerPlayerEntity
+                && player.getHealth() <= 2
+                && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
+                && shouldBeAffected(player))
         {
             // Additional effects for dying
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200, 1));
@@ -138,11 +174,51 @@ public class PlayerEffectsManager {
     private void applySlowHealing(PlayerEntity player)
     {
         if (player.age % 600 == 0 && player.getHealth() < player.getMaxHealth()
-                && player.getHungerManager().getFoodLevel() >= 9)
+                && player.getHungerManager().getFoodLevel() >= 9
+                && ImMovensMod.getSettings().isNaturalRegenEnabled()
+                && shouldBeAffected(player))
         {
             player.heal(1.0f);
         }
     }
 
+    /**
+     * Emits a pain sound from provided PlayerEntity when certain conditions are met
+     * @param player PlayerEntity to play sound from
+     */
+    private void doHurtNoise(PlayerEntity player) {
+        // Process hurt sound
+        boolean doHurt =
+            ImMovensMod.getSettings().hasPainSounds() &&               // Pain sounds enabled
+            (int) player.distanceTraveled > distToNextHurtSound &&              // Player is over threshold
+            ImMovensMod.getSettings().isHealthPenaltiesEnabled() &&    // Health statuses enabled
+            player.getHealth() <= THRESHOLD_FOR_NOISE &&                        // Player's health is low enough
+            shouldBeAffected(player);                                           // Player is not in creative
+
+        if (doHurt && !player.getWorld().isClient) {
+            // Player meets criteria for making hurt sound
+            player.playSoundToPlayer(ImMovensSound.PLAYER_HURT, SoundCategory.PLAYERS,
+                    0.5f, pitchFromHealth(player) + Random.create().nextFloat() * 0.1f);
+            setNextDistToHurtSound(player);
+        }
+    }
+
+    /**
+     * Determines distance for hurt sound based on player's health
+     * @param player PlayerEntity to pull distance from
+     */
+    public void setNextDistToHurtSound(PlayerEntity player) {
+        distToNextHurtSound = player.distanceTraveled + (
+                4.0f * (player.getHealth() / THRESHOLD_FOR_NOISE));
+    }
+
+    /**
+     * Determines pitch of hurt sound based on player's health
+     * @param player PlayerEntity to pull health info from
+     * @return Pitch value
+     */
+    private float pitchFromHealth(PlayerEntity player) {
+        return 0.55f + ((player.getHealth() / THRESHOLD_FOR_NOISE) * 0.45f);
+    }
 
 }
