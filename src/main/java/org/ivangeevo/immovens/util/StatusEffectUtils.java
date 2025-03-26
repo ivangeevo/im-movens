@@ -92,18 +92,18 @@ public class StatusEffectUtils {
         INJURED(2),
         HEALTHY(2);
 
-        private final EntityAttributeModifier damageModifier;
+        private final EntityAttributeModifier attackModifier;
 
         AttackPower(int value) {
-            this.damageModifier = new EntityAttributeModifier(
+            this.attackModifier = new EntityAttributeModifier(
                     Identifier.of(ImMovensMod.MOD_ID, "attack_damage_modifier"),
                     value,
                     EntityAttributeModifier.Operation.ADD_VALUE
             );
         }
 
-        public EntityAttributeModifier getDamageModifier() {
-            return damageModifier;
+        public EntityAttributeModifier getAttackModifier() {
+            return attackModifier;
         }
 
         public static AttackPower fromHealthLevel(float healthLevel) {
