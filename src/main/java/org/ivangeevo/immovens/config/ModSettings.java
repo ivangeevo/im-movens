@@ -2,14 +2,34 @@ package org.ivangeevo.immovens.config;
 
 public class ModSettings
 {
-    protected boolean disableFOVScaling = false;
-    protected boolean painSounds = false;
+    protected boolean doFOVScaling = true;
+    protected boolean doPainSounds = false;
+    protected boolean doHardcoreExhaustion = true;
+    protected boolean doHungerPenalties = true;
+    protected boolean doHealthPenalties = true;
+    protected boolean doNaturalRegen = true;
 
-    public boolean isFOVScalingDisabled() {
-        return disableFOVScaling;
+    public boolean isHardcoreHungerEnabled() {
+        return doHardcoreExhaustion;
+    }
+
+    public boolean isHungerPenaltiesEnabled() {
+        return doHungerPenalties;
+    }
+
+    public boolean isHealthPenaltiesEnabled() {
+        return doHealthPenalties;
+    }
+
+    public boolean isFOVScalingEnabled() {
+        return doFOVScaling;
     }
 
     public boolean hasPainSounds() {
-        return painSounds;
+        return doPainSounds;
+    }
+
+    public boolean isNaturalRegenEnabled() {
+        return doNaturalRegen;
     }
 }

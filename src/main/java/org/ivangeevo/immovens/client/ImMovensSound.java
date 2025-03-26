@@ -13,6 +13,4 @@ public class ImMovensSound {
     public static void register() {
         Registry.register(Registries.SOUND_EVENT, PLAYER_HURT_LOCATION, PLAYER_HURT);
     }
-
-
 }

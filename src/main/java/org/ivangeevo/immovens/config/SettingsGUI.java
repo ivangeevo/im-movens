@@ -22,17 +22,43 @@ public class SettingsGUI
 
         /** General Category **/
         general.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.fov_scaling"), settingsCommon.disableFOVScaling)
-                .setDefaultValue(false)
-                .setSaveConsumer(newValue -> settingsCommon.disableFOVScaling = newValue)
+                .startBooleanToggle(Text.translatable("config.immovens.fov_scaling"), settingsCommon.doFOVScaling)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doFOVScaling = newValue)
                 .setTooltip(Text.translatable("config.immovens.tooltip.fov_scaling"))
                 .build());
-
         general.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.pain_sounds"), settingsCommon.painSounds)
-                .setDefaultValue(true)
-                .setSaveConsumer(newValue -> settingsCommon.painSounds = newValue)
+                .startBooleanToggle(Text.translatable("config.immovens.pain_sounds"), settingsCommon.doPainSounds)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> settingsCommon.doPainSounds = newValue)
                 .setTooltip(Text.translatable("config.immovens.tooltip.pain_sounds"))
+                .build());
+
+        /** Gameplay Category **/
+        ConfigCategory gameplay = builder.getOrCreateCategory(Text.translatable("config.immovens.category.gameplay"));
+        gameplay.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.immovens.hardcore_exhaustion"), settingsCommon.doHardcoreExhaustion)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doHardcoreExhaustion = newValue)
+                .setTooltip(Text.translatable("config.immovens.tooltip.hardcore_exhaustion"))
+                .build());
+        gameplay.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.immovens.do_hunger_status"), settingsCommon.doHungerPenalties)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doHungerPenalties = newValue)
+                .setTooltip(Text.translatable("config.immovens.tooltip.do_hunger_status"))
+                .build());
+        gameplay.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.immovens.do_health_status"), settingsCommon.doHealthPenalties)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doHealthPenalties = newValue)
+                .setTooltip(Text.translatable("config.immovens.tooltip.do_health_status"))
+                .build());
+        gameplay.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.immovens.do_natural_regen"), settingsCommon.doNaturalRegen)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doNaturalRegen = newValue)
+                .setTooltip(Text.translatable("config.immovens.tooltip.do_natural_regen"))
                 .build());
 
         return builder.build();
