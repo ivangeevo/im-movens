@@ -1,0 +1,17 @@
+{
+  "config.immovens.category.general": "General",
+  "config.immovens.category.gameplay": "Gameplay",
+  "config.immovens.fov_scaling": "FOV Scaling",
+  "config.immovens.pain_sounds": "Ambient Pain Sounds",
+  "config.immovens.do_hunger_status": "Do Hunger Penalties",
+  "config.immovens.do_health_status": "Do Health Penalties",
+  "config.immovens.do_natural_regen": "Regenerate Health Over Time",
+  "config.immovens.hardcore_exhaustion": "Hardcore Exhaustion",
+  "config.immovens.tooltip.fov_scaling": "Accessibility option that disables FOV from\nchanging when under speed penalties from this mod",
+  "config.immovens.tooltip.pain_sounds": "Player makes pain sounds when health is very low,\nemulating behavior from earlier versions of BTW",
+  "config.immovens.tooltip.do_hunger_status": "Introduces debuffs as your hunger gets lower.",
+  "config.immovens.tooltip.do_health_status": "Introduces debuffs as your health gets lower.",
+  "config.immovens.tooltip.do_natural_regen": "Naturally regenerate half a heart every 600 ticks.\nThis operates on top of vanilla regen/saturation mechanics",
+  "config.immovens.tooltip.hardcore_exhaustion": "Alters action exhaustion values to better \nmatch those seen in Better Than Wolves",
+  "title.immovens.config": "Im'movens Configuration Menu"
+}

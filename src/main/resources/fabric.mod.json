@@ -9,7 +9,7 @@
     "repo": "https://github.com/ivangeevo/im-movens"
   },
   "license": "MIT",
-  "icon": "assets/im-movens/icon.png",
+  "icon": "assets/im_movens/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -17,6 +17,9 @@
     ],
     "main": [
       "org.ivangeevo.immovens.ImMovensMod"
+    ],
+    "modmenu": [
+      "org.ivangeevo.immovens.config.ImMovensConfig"
     ]
   },
   "mixins": [
