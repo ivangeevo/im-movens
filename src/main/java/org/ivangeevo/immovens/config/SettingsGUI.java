@@ -13,52 +13,52 @@ public class SettingsGUI
     static ModSettings settingsCommon = ImMovensMod.getInstance().settings;
     public static Screen createConfigScreen(Screen parent) {
         ConfigBuilder builder = ConfigBuilder.create()
-                .setParentScreen(parent).setTitle(Text.translatable("title.immovens.config"));
+                .setParentScreen(parent).setTitle(Text.translatable("title.im_movens.config"));
         builder.setSavingRunnable(() -> { ImMovensMod.getInstance().saveSettings(); });
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        ConfigCategory general = builder.getOrCreateCategory(Text.translatable("config.immovens.category.general"));
+        ConfigCategory general = builder.getOrCreateCategory(Text.translatable("config.im_movens.category.general"));
 
         /** General Category **/
         general.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.fov_scaling"), settingsCommon.doFOVScaling)
+                .startBooleanToggle(Text.translatable("config.im_movens.fov_scaling"), settingsCommon.doFOVScaling)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doFOVScaling = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.fov_scaling"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.fov_scaling"))
                 .build());
         general.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.pain_sounds"), settingsCommon.doPainSounds)
+                .startBooleanToggle(Text.translatable("config.im_movens.pain_sounds"), settingsCommon.doPainSounds)
                 .setDefaultValue(false)
                 .setSaveConsumer(newValue -> settingsCommon.doPainSounds = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.pain_sounds"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.pain_sounds"))
                 .build());
 
         /** Gameplay Category **/
-        ConfigCategory gameplay = builder.getOrCreateCategory(Text.translatable("config.immovens.category.gameplay"));
+        ConfigCategory gameplay = builder.getOrCreateCategory(Text.translatable("config.im_movens.category.gameplay"));
         gameplay.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.hardcore_exhaustion"), settingsCommon.doHardcoreExhaustion)
+                .startBooleanToggle(Text.translatable("config.im_movens.hardcore_exhaustion"), settingsCommon.doHardcoreExhaustion)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doHardcoreExhaustion = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.hardcore_exhaustion"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.hardcore_exhaustion"))
                 .build());
         gameplay.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.do_hunger_status"), settingsCommon.doHungerPenalties)
+                .startBooleanToggle(Text.translatable("config.im_movens.do_hunger_status"), settingsCommon.doHungerPenalties)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doHungerPenalties = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.do_hunger_status"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.do_hunger_status"))
                 .build());
         gameplay.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.do_health_status"), settingsCommon.doHealthPenalties)
+                .startBooleanToggle(Text.translatable("config.im_movens.do_health_status"), settingsCommon.doHealthPenalties)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doHealthPenalties = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.do_health_status"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.do_health_status"))
                 .build());
         gameplay.addEntry(entryBuilder
-                .startBooleanToggle(Text.translatable("config.immovens.do_natural_regen"), settingsCommon.doNaturalRegen)
+                .startBooleanToggle(Text.translatable("config.im_movens.do_natural_regen"), settingsCommon.doNaturalRegen)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doNaturalRegen = newValue)
-                .setTooltip(Text.translatable("config.immovens.tooltip.do_natural_regen"))
+                .setTooltip(Text.translatable("config.im_movens.tooltip.do_natural_regen"))
                 .build());
 
         return builder.build();
