@@ -2,6 +2,7 @@ package org.ivangeevo.immovens.client;
 
 import btwr.btwr_sl.lib.gui.HUDInitializeListener;
 import btwr.btwr_sl.lib.gui.PenaltyDisplayManager;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -88,5 +89,22 @@ public class ModPenalties implements HUDInitializeListener {
                             PlayerEffectsManager.getInstance().shouldBeAffected(player));
                 }
         ));
+        // Raw food and health debug display
+        dm.addPenalty(new PenaltyDisplayManager.Penalty(100,
+                () -> {
+                    // Get player stats
+                    PlayerEntity player = client.player;
+                    if (player == null) return "";
+
+                    HungerManager hungerManager = player.getHungerManager();
+                    int foodLevel = hungerManager.getFoodLevel();
+                    float healthLevel = player.getHealth();
+
+                    return "FOOD %d HEALTH %.2f".formatted(foodLevel, healthLevel);
+                }, () -> {
+                    // Only render while debug info is displayed and in dev environment
+                    return client.getDebugHud().shouldShowDebugHud() && FabricLoader.getInstance().isDevelopmentEnvironment();
+                })
+        );
     }
 }
