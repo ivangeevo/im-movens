@@ -59,7 +59,7 @@ public class PlayerEffectsManager {
 
     public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
     {
-        if ((player.getHungerManager().getFoodLevel() < 4 && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
+        if ((player.getHungerManager().getFoodLevel() <= 4 && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
             || (player.getHealth() <= 4 && ImMovensMod.getSettings().isHealthPenaltiesEnabled())
             && shouldBeAffected(player))
         { ci.cancel(); }

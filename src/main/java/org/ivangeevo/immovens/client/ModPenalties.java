@@ -10,9 +10,9 @@ import org.ivangeevo.immovens.ImMovensMod;
 import org.ivangeevo.immovens.util.PlayerEffectsManager;
 
 public class ModPenalties implements HUDInitializeListener {
-    public ModPenalties() {
-    }
-
+    /**
+     * Initializes hunger and health penalties
+     */
     @Override
     public void init(MinecraftClient client, PenaltyDisplayManager dm) {
         dm.addPenalty(new PenaltyDisplayManager.Penalty(
@@ -28,13 +28,13 @@ public class ModPenalties implements HUDInitializeListener {
                     int foodLevel = hungerManager.getFoodLevel();
 
                     switch (foodLevel) {
-                        case 0, 1 -> {
+                        case 0, 1, 2 -> {
                             return "Starving";
                         }
-                        case 2, 3 -> {
+                        case 3, 4 -> {
                             return "Famished";
                         }
-                        case 4, 5, 6 -> {
+                        case 5, 6 -> {
                             return "Hungry";
                         }
                         case 7, 8 -> {
@@ -45,7 +45,7 @@ public class ModPenalties implements HUDInitializeListener {
                 },
                 // Draw conditions
                 () -> {
-                    PlayerEntity player = MinecraftClient.getInstance().player;
+                    PlayerEntity player = client.player;
                     if (player == null) return false;
                     return (ImMovensMod.getSettings().isHungerPenaltiesEnabled() &&
                             PlayerEffectsManager.getInstance().shouldBeAffected(player));
@@ -56,7 +56,7 @@ public class ModPenalties implements HUDInitializeListener {
                 PenaltyDisplayManager.HEALTH_PRIORITY,
                 // Text conditions
                 () -> {
-                    // Get food level
+                    // Get health level
                     PlayerEntity player = client.player;
                     if (player == null) return "";
 
@@ -82,11 +82,12 @@ public class ModPenalties implements HUDInitializeListener {
                 },
                 // Draw conditions
                 () -> {
-                    PlayerEntity player = MinecraftClient.getInstance().player;
+                    PlayerEntity player = client.player;
                     if (player == null) return false;
                     return (ImMovensMod.getSettings().isHealthPenaltiesEnabled() &&
                             PlayerEffectsManager.getInstance().shouldBeAffected(player));
                 }
         ));
+        
     }
 }

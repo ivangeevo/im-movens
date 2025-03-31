@@ -2,6 +2,7 @@ package org.ivangeevo.immovens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.ivangeevo.immovens.ImMovensMod;
 
 public class StatusEffectUtils {
@@ -75,7 +76,7 @@ public class StatusEffectUtils {
 
         public static HealthState fromHealthLevel(float healthLevel) {
             return (ImMovensMod.getSettings().isHealthPenaltiesEnabled()) ?
-            switch ((int) healthLevel) {
+            switch (MathHelper.ceil(healthLevel)) {
                 case 0, 1, 2 -> DYING;
                 case 3, 4 -> CRIPPLED;
                 case 5, 6 -> WOUNDED;
@@ -107,7 +108,7 @@ public class StatusEffectUtils {
         }
 
         public static AttackPower fromHealthLevel(float healthLevel) {
-            return switch ((int) healthLevel) {
+            return switch (MathHelper.ceil(healthLevel)) {
                 case 0, 1, 2 -> DYING;
                 case 3, 4 -> CRIPPLED;
                 case 5, 6 -> WOUNDED;

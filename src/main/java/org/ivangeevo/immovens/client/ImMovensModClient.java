@@ -1,7 +1,6 @@
 package org.ivangeevo.immovens.client;
 
 import btwr.btwr_sl.lib.event.EventHUDInitialized;
-import btwr.btwr_sl.lib.gui.PenaltyDisplayManager;
 import net.fabricmc.api.ClientModInitializer;
 
 public class ImMovensModClient implements ClientModInitializer
@@ -10,6 +9,7 @@ public class ImMovensModClient implements ClientModInitializer
 
     @Override
     public void onInitializeClient() {
+        // Initialize penalties
         EventHUDInitialized.register(penalties);
     }
 }
