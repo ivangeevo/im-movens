@@ -1,8 +1,10 @@
 package org.ivangeevo.immovens;
 
+import btwr.btwr_sl.lib.event.EventHUDInitialized;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import org.ivangeevo.immovens.client.ImMovensSound;
+import org.ivangeevo.immovens.client.ModPenalties;
 import org.ivangeevo.immovens.config.ModSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
