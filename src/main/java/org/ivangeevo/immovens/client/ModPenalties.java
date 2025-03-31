@@ -29,16 +29,16 @@ public class ModPenalties implements HUDInitializeListener {
 
                     switch (foodLevel) {
                         case 0, 1, 2 -> {
-                            return "Starving";
+                            return "penalty.im_movens.starving";
                         }
                         case 3, 4 -> {
-                            return "Famished";
+                            return "penalty.im_movens.famished";
                         }
                         case 5, 6 -> {
-                            return "Hungry";
+                            return "penalty.im_movens.hungry";
                         }
                         case 7, 8 -> {
-                            return "Peckish";
+                            return "penalty.im_movens.peckish";
                         }
                     }
                     return "";
@@ -63,19 +63,19 @@ public class ModPenalties implements HUDInitializeListener {
                     float healthLevel = player.getHealth();
                     switch (MathHelper.ceil(healthLevel)) {
                         case 0, 1, 2 -> {
-                            return "Dying";
+                            return "penalty.im_movens.dying";
                         }
                         case 3, 4 -> {
-                            return "Crippled";
+                            return "penalty.im_movens.crippled";
                         }
                         case 5, 6 -> {
-                            return "Wounded";
+                            return "penalty.im_movens.wounded";
                         }
                         case 7, 8 -> {
-                            return "Injured";
+                            return "penalty.im_movens.injured";
                         }
                         case 9, 10 -> {
-                            return "Hurt";
+                            return "penalty.im_movens.hurt";
                         }
                     }
                     return "";
@@ -88,6 +88,5 @@ public class ModPenalties implements HUDInitializeListener {
                             PlayerEffectsManager.getInstance().shouldBeAffected(player));
                 }
         ));
-        
     }
 }

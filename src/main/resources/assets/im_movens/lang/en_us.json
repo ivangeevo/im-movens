@@ -14,5 +14,14 @@
   "config.im_movens.tooltip.do_natural_regen": "Naturally regenerate half a heart every 600 ticks.\nThis operates on top of vanilla regen/saturation mechanics",
   "config.im_movens.tooltip.hardcore_exhaustion": "Alters action exhaustion values to better \nmatch those seen in Better Than Wolves",
   "sound.im_movens.hurt": "Player hurts",
+  "penalty.im_movens.hurt": "Hurt",
+  "penalty.im_movens.injured": "Injured",
+  "penalty.im_movens.wounded": "Wounded",
+  "penalty.im_movens.crippled": "Crippled",
+  "penalty.im_movens.dying": "Dying",
+  "penalty.im_movens.peckish": "Peckish",
+  "penalty.im_movens.hungry": "Hungry",
+  "penalty.im_movens.famished": "Famished",
+  "penalty.im_movens.starving": "Starving",
   "title.im_movens.config": "Im'movens Configuration Menu"
 }
