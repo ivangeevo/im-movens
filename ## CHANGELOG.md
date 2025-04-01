@@ -1,3 +1,15 @@
+
+## v1.5
+
+### Another set of changes by jeffyjamzhd
++ Integrate BTWRSL as a new dependency, pulling from the GitHub maven
++ Update translation keys to all use the same namespace im_movens
++ Translation keys have been added for all penalties and the ambient pain noises
++ Rendering for health and hunger statuses have been altered to better match BTW
++ Thresholds for certain penalties have been updated to reflect the above change
++ Added a penalty for the dev environment that shows raw health and hunger values only when F3 is toggled
+
+
 ## v1.4
 + Fixed mod icon to display properly in the mod lists.
 + Updated mod description to display properly in the mod lists & updated to correct license (CC-BY-4.0)
