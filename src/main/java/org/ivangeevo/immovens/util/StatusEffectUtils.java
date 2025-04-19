@@ -46,7 +46,7 @@ public class StatusEffectUtils {
                 // this returns int.
                 foodLevel = MathHelper.ceil(foodLevel / 3d);
                 float fatLevel = player.getHungerManager().getSaturationLevel();
-                severity = ImMovensMod.getSettings().isHungerPenaltiesEnabled() ?
+                severity = ImMovensMod.getSettings().isFatPenaltiesEnabled() ?
                     switch (MathHelper.ceil(fatLevel/6f)) {
                     case 8 -> 1;
                     case 9 -> 2;
@@ -61,12 +61,12 @@ public class StatusEffectUtils {
                 case 5, 6 -> 1;
                 default -> 0;
             } : 0);
-            severity = Math.max(severity, switch (MathHelper.ceil(healthLevel)) {
+            severity = Math.max(severity, ImMovensMod.getSettings().isHealthPenaltiesEnabled() ? switch (MathHelper.ceil(healthLevel)) {
                 case 0, 1, 2, 3, 4 -> 3;
                 case 5, 6 -> 2;
                 case 7, 8 -> 1;
                 default -> 0;
-            });
+            } : 0);
             return getSeverityState(severity);
         }
     }
