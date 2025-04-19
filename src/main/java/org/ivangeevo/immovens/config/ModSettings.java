@@ -7,6 +7,7 @@ public class ModSettings
     protected boolean doHardcoreExhaustion = true;
     protected boolean doHungerPenalties = true;
     protected boolean doHealthPenalties = true;
+    protected boolean doFatPenalties = true;
     protected boolean doNaturalRegen = true;
 
     public boolean isHardcoreHungerEnabled() {
@@ -19,6 +20,10 @@ public class ModSettings
 
     public boolean isHealthPenaltiesEnabled() {
         return doHealthPenalties;
+    }
+
+    public boolean isFatPenaltiesEnabled() {
+        return doFatPenalties;
     }
 
     public boolean isFOVScalingEnabled() {

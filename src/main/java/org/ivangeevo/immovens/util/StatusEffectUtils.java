@@ -1,88 +1,73 @@
 package org.ivangeevo.immovens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.ivangeevo.immovens.ImMovensMod;
 
 public class StatusEffectUtils {
 
+    public enum GenericState {
+        SEVERE(0.25f),
+        MAJOR(0.5f),
+        MINOR(0.75f),
+        NORMAL(1.0f);
 
-    public enum HungerState {
-        STARVING(0.25f, 0.25f),
-        FAMISHED(0.5f, 0.5f),
-        HUNGRY(0.75f, 0.75f),
-        PECKISH(1.0f, 1.0f),
-        WELL_FED(1.0f, 1.0f);
-
-        private final EntityAttributeModifier speedModifier;
-        private final EntityAttributeModifier attackModifier;
+        private final EntityAttributeModifier genericModifier;
 
 
-        HungerState(float speedMultiplier, float attackModifier)
+        GenericState(float modifier)
         {
-            this.attackModifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, "hunger_speed_modifier"),
-                    speedMultiplier - 1.0f,
-                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-            );
-            this.speedModifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, "hunger_speed_modifier"),
-                    attackModifier - 1.0f,
+            this.genericModifier = new EntityAttributeModifier(
+                    Identifier.of(ImMovensMod.MOD_ID, "generic_modifier"),
+                    modifier - 1.0f,
                     EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
             );
         }
 
-        public EntityAttributeModifier getSpeedModifier() {
-            return speedModifier;
-        }
-        public EntityAttributeModifier getAttackModifier() {
-            return attackModifier;
+        public EntityAttributeModifier getModifier() {
+            return genericModifier;
         }
 
-
-        public static HungerState fromFoodLevel(int foodLevel) {
-            return (ImMovensMod.getSettings().isHungerPenaltiesEnabled()) ?
-            switch (foodLevel) {
-                case 0, 1, 2 -> STARVING;
-                case 3, 4 -> FAMISHED;
-                case 5, 6 -> HUNGRY;
-                case 7, 8 -> PECKISH;
-                default -> WELL_FED;
-            } : WELL_FED;
+        public static GenericState getSeverityState(int severity) {
+            return switch (severity) {
+                case 1 -> MINOR;
+                case 2 -> MAJOR;
+                case 3 -> SEVERE;
+	            default -> NORMAL;
+            };
         }
-    }
-
-    public enum HealthState {
-        DYING(0.25f),
-        CRIPPLED(0.5f),
-        WOUNDED(0.75f),
-        INJURED(1.0f),
-        HEALTHY(1.0f);
-
-        private final EntityAttributeModifier speedModifier;
-
-        HealthState(float speedMultiplier) {
-            this.speedModifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, "health_speed_modifier"),
-                    speedMultiplier - 1.0f,
-                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-            );
-        }
-
-        public EntityAttributeModifier getSpeedModifier() {
-            return speedModifier;
-        }
-
-        public static HealthState fromHealthLevel(float healthLevel) {
-            return (ImMovensMod.getSettings().isHealthPenaltiesEnabled()) ?
-            switch (MathHelper.ceil(healthLevel)) {
-                case 0, 1, 2 -> DYING;
-                case 3, 4 -> CRIPPLED;
-                case 5, 6 -> WOUNDED;
-                case 7, 8, 9, 10 -> INJURED;
-                default -> HEALTHY;
-            } : HEALTHY;
+        public static GenericState getStateFromPlayerStats(PlayerEntity player) {
+            int foodLevel = player.getHungerManager().getFoodLevel();
+            float healthLevel = player.getHealth();
+            int severity = 0;
+            if (ImMovensMod.isHungerGranular) {
+                // this returns int.
+                foodLevel = MathHelper.ceil(foodLevel / 3d);
+                float fatLevel = player.getHungerManager().getSaturationLevel();
+                severity = ImMovensMod.getSettings().isHungerPenaltiesEnabled() ?
+                    switch (MathHelper.ceil(fatLevel/6f)) {
+                    case 8 -> 1;
+                    case 9 -> 2;
+                    case 10 -> 3;
+                    default -> 0;
+                } : 0;
+            }
+            severity = Math.max(severity, ImMovensMod.getSettings().isHungerPenaltiesEnabled() ?
+                switch (foodLevel) {
+                case 0, 1, 2 -> 3;
+                case 3, 4 -> 2;
+                case 5, 6 -> 1;
+                default -> 0;
+            } : 0);
+            severity = Math.max(severity, switch (MathHelper.ceil(healthLevel)) {
+                case 0, 1, 2, 3, 4 -> 3;
+                case 5, 6 -> 2;
+                case 7, 8 -> 1;
+                default -> 0;
+            });
+            return getSeverityState(severity);
         }
     }
 
