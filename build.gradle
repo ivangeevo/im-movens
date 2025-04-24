@@ -35,7 +35,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation("org.ivangeevo:btwr-shared-lib:${project.btwr_lib_version}")
+    modImplementation("org.ivangeevo:btwr-shared-lib:${project.btwr_sl_version}")
     modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 
@@ -43,7 +43,7 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
-    inputs.property "btwr_lib_version", project.btwr_lib_version
+    inputs.property "btwr_sl_version", project.btwr_sl_version
 
     filteringCharset "UTF-8"
 
@@ -51,7 +51,7 @@ processResources {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
                 "loader_version": project.loader_version,
-                "btwr_lib_version": project.btwr_lib_version
+                "btwr_sl_version": project.btwr_sl_version
     }
 }
 
