@@ -3,7 +3,6 @@ package org.ivangeevo.immovens;
 import btwr.btwr_sl.lib.event.EventHUDInitialized;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 import org.ivangeevo.immovens.client.ImMovensSound;
 import org.ivangeevo.immovens.client.ModPenalties;
 import org.ivangeevo.immovens.config.ModSettings;
@@ -22,8 +21,6 @@ public class ImMovensMod implements ModInitializer
 
     private static ImMovensMod instance;
     public ModSettings settings;
-
-    public static boolean isHungerGranular = false;
 
     /**
      * Getter for current ImMovensMod instance
@@ -48,10 +45,6 @@ public class ImMovensMod implements ModInitializer
         ImMovensSound.register();
         loadSettings();
 
-        //this is done to reduce unneeded compute cost
-        if (FabricLoader.getInstance().isModLoaded("granular_hunger")) {
-            isHungerGranular = true;
-        }
         // Set instance
         instance = this;
     }
