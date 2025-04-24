@@ -1,5 +1,6 @@
 package org.ivangeevo.immovens.config;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import org.ivangeevo.immovens.ImMovensMod;
@@ -53,6 +54,13 @@ public class SettingsGUI
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> settingsCommon.doHealthPenalties = newValue)
                 .setTooltip(Text.translatable("config.im_movens.tooltip.do_health_status"))
+                .build());
+        gameplay.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.im_movens.do_fat_status"), settingsCommon.doFatPenalties)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> settingsCommon.doFatPenalties = newValue)
+                .setTooltip(Text.translatable("config.im_movens.tooltip.do_fat_status"))
+                .setDisplayRequirement(() -> ImMovensMod.isHungerGranular)
                 .build());
         gameplay.addEntry(entryBuilder
                 .startBooleanToggle(Text.translatable("config.im_movens.do_natural_regen"), settingsCommon.doNaturalRegen)
