@@ -1,3 +1,16 @@
+## v1.6
+This update brings compatibility with the Granular Hunger mod by Tetro48 and a few more bug fixes/features for the mod from him as well. Thanks for those :)
+
+#### Features related to Granular Hunger: 
+- Configuration option to toggle if fat penalties should apply overall.
+- Added display texts for Fat penalties from the Granular Hunger mod to display when hunger gets lower.
+- Code changes to account if the mod is installed and get the proper hunger value in that case for displaying hunger penalties
+- Fixed a bug with penalties like hunger and health related or Granular Hunger's fat penalty stacking on top of each other when displaying on the HUD
+
+#### Other changes:
++ Added functionality where the player's attack damage and block breaking speed will get affected when at low health/hunger as well
++ Fixed (added) missing hunger level display state ("Emaciated") to display when the player is 1 shank or lower (after "Famished") 
++ Updated the mod to Fabric API 0.115.6 + & Fabric Loader 0.16.13 (ivangeevo)
 
 ## v1.5
 
