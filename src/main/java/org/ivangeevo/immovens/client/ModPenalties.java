@@ -28,9 +28,16 @@ public class ModPenalties implements HUDInitializeListener {
                     HungerManager hungerManager = player.getHungerManager();
                     int foodLevel = hungerManager.getFoodLevel();
 
+                    if (ImMovensMod.isHungerGranular) {
+                        // this returns int.
+                        foodLevel = MathHelper.ceil(foodLevel / 3d);
+                    }
                     switch (foodLevel) {
-                        case 0, 1, 2 -> {
+                        case 0 -> {
                             return "penalty.im_movens.starving";
+                        }
+                        case 1, 2 -> {
+                            return "penalty.im_movens.emaciated";
                         }
                         case 3, 4 -> {
                             return "penalty.im_movens.famished";
@@ -52,6 +59,44 @@ public class ModPenalties implements HUDInitializeListener {
                             PlayerEffectsManager.getInstance().shouldBeAffected(player));
                 }
         ));
+        if (ImMovensMod.isHungerGranular) {
+            dm.addPenalty(new PenaltyDisplayManager.Penalty(
+                    // Priority
+                    40,
+                    // Text conditions
+                    () -> {
+                        // Get food level
+                        PlayerEntity player = client.player;
+                        if (player == null) return "";
+
+                        HungerManager hungerManager = player.getHungerManager();
+                        float saturationLevel = hungerManager.getSaturationLevel();
+
+                        switch (MathHelper.ceil(saturationLevel / 6f)) {
+                            case 7 -> {
+                                return "penalty.im_movens.plump";
+                            }
+                            case 8 -> {
+                                return "penalty.im_movens.chubby";
+                            }
+                            case 9 -> {
+                                return "penalty.im_movens.fat";
+                            }
+                            case 10 -> {
+                                return "penalty.im_movens.obese";
+                            }
+                        }
+                        return "";
+                    },
+                    // Draw conditions
+                    () -> {
+                        PlayerEntity player = client.player;
+                        if (player == null) return false;
+                        return (ImMovensMod.getSettings().isFatPenaltiesEnabled() &&
+                                PlayerEffectsManager.getInstance().shouldBeAffected(player));
+                    }
+            ));
+        }
         dm.addPenalty(new PenaltyDisplayManager.Penalty(
                 // Priority
                 PenaltyDisplayManager.HEALTH_PRIORITY,

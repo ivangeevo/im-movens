@@ -7,6 +7,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.ivangeevo.immovens.ImMovensMod;
 import org.ivangeevo.immovens.client.ImMovensSound;
@@ -16,9 +18,7 @@ public class PlayerEffectsManager {
 
     private static final PlayerEffectsManager INSTANCE = new PlayerEffectsManager();
 
-    private StatusEffectUtils.HungerState currentHungerState = StatusEffectUtils.HungerState.WELL_FED;
-    private StatusEffectUtils.HealthState currentHealthState = StatusEffectUtils.HealthState.HEALTHY;
-    private StatusEffectUtils.AttackPower currentAttackPower = StatusEffectUtils.AttackPower.HEALTHY;
+    private StatusEffectUtils.GenericState currentGenericState = StatusEffectUtils.GenericState.NORMAL;
 
     /**
      * Block distance threshold for pain sound to occur
@@ -47,7 +47,7 @@ public class PlayerEffectsManager {
     {
         this.applyNauseaEffect(player);
         this.applyBlindnessEffect(player);
-        this.updateSpeedAttributes(player);
+        this.updateAttributes(player);
         this.applySlowHealing(player);
         this.doHurtNoise(player);
     }
@@ -59,94 +59,77 @@ public class PlayerEffectsManager {
 
     public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
     {
-        boolean hungerCondition = player.getHungerManager().getFoodLevel() <= 4
+        int foodLevel = player.getHungerManager().getFoodLevel();
+        boolean fatCondition = false;
+        if (ImMovensMod.isHungerGranular) {
+            // this returns int.
+            foodLevel = MathHelper.ceil(foodLevel / 3d);
+            float fatLevel = player.getHungerManager().getSaturationLevel();
+            fatCondition = fatLevel > 54
+                    && ImMovensMod.getSettings().isFatPenaltiesEnabled();
+        }
+        boolean hungerCondition = foodLevel <= 4
                 && ImMovensMod.getSettings().isHungerPenaltiesEnabled();
         boolean healthCondition = player.getHealth() <= 4
                 && ImMovensMod.getSettings().isHealthPenaltiesEnabled();
 
-        if ((hungerCondition || healthCondition) && shouldBeAffected(player))
+        if ((hungerCondition || healthCondition || fatCondition) && shouldBeAffected(player))
         { ci.cancel(); }
     }
 
-    private void updateSpeedAttributes(PlayerEntity player) {
+    private void updateAttributes(PlayerEntity player) {
         EntityAttributeInstance movementSpeedAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         EntityAttributeInstance blockBreakSpeedAttribute = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
         EntityAttributeInstance attackDamageAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 
-        if (movementSpeedAttribute != null)
-        {
-            // Get the player's current hunger and health states
-            StatusEffectUtils.HungerState newHungerState = StatusEffectUtils.HungerState.fromFoodLevel(player.getHungerManager().getFoodLevel());
-            StatusEffectUtils.HealthState newHealthState = StatusEffectUtils.HealthState.fromHealthLevel(player.getHealth());
-            StatusEffectUtils.AttackPower newAttackPower = StatusEffectUtils.AttackPower.fromHealthLevel(player.getHealth());
+        // Get the player's current hunger and health states
+        StatusEffectUtils.GenericState newGenericState = StatusEffectUtils.GenericState.getStateFromPlayerStats(player);
 
-            // Update HungerState modifier
-            if (newHungerState != currentHungerState) {
-                movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
-                movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
+        if (movementSpeedAttribute != null) {
+            // Update GenericState modifier
+            if (newGenericState != currentGenericState) {
+                movementSpeedAttribute.removeModifier(currentGenericState.getModifier());
+                movementSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
                 setNextDistToHurtSound(player);
 
-                currentHungerState = newHungerState;
-            }
-
-            // Update HealthState modifier
-            if (newHealthState != currentHealthState) {
-                movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
-                movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
-                setNextDistToHurtSound(player);
-
-                currentHealthState = newHealthState;
             }
 
             // Revert if player shouldn't be affected at this time
             if (!shouldBeAffected(player)) {
-                movementSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
-                movementSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
+                movementSpeedAttribute.removeModifier(currentGenericState.getModifier());
             } else if (shouldBeAffected(player)) {
-                if (!movementSpeedAttribute.hasModifier(currentHealthState.getSpeedModifier().id()))
-                    movementSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
-                if (!movementSpeedAttribute.hasModifier(currentHungerState.getSpeedModifier().id()))
-                    movementSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
+                if (!movementSpeedAttribute.hasModifier(currentGenericState.getModifier().id()))
+                    movementSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
             }
 
+            Identifier legacyHungerModifierIdentifier = Identifier.of(ImMovensMod.MOD_ID, "hunger_speed_modifier");
+            Identifier legacyHealthModifierIdentifier = Identifier.of(ImMovensMod.MOD_ID, "health_speed_modifier");
+            //removes legacy modifiers
+            if (movementSpeedAttribute.hasModifier(legacyHungerModifierIdentifier)) {
+                movementSpeedAttribute.removeModifier(legacyHungerModifierIdentifier);
+            }
+            if (movementSpeedAttribute.hasModifier(legacyHealthModifierIdentifier)) {
+                movementSpeedAttribute.removeModifier(legacyHealthModifierIdentifier);
+            }
         }
 
-        // TODO: Fix  the block breaking speed attack power modifier to actually apply
-        /**
         if (blockBreakSpeedAttribute != null)
         {
-            // Get the player's current hunger and health states
-            StatusEffectUtils.HungerState newHungerState = StatusEffectUtils.HungerState.fromFoodLevel(player.getHungerManager().getFoodLevel());
-            StatusEffectUtils.HealthState newHealthState = StatusEffectUtils.HealthState.fromHealthLevel(player.getHealth());
-            StatusEffectUtils.AttackPower newAttackPower = StatusEffectUtils.AttackPower.fromHealthLevel(player.getHealth());
-
-            // Update HungerState modifier
-            if (newHungerState != currentHungerState) {
-                blockBreakSpeedAttribute.removeModifier(currentHungerState.getSpeedModifier());
-                blockBreakSpeedAttribute.addPersistentModifier(newHungerState.getSpeedModifier());
-                currentHungerState = newHungerState;
-            }
-
-            // Update HealthState modifier
-            if (newHealthState != currentHealthState) {
-                blockBreakSpeedAttribute.removeModifier(currentHealthState.getSpeedModifier());
-                blockBreakSpeedAttribute.addPersistentModifier(newHealthState.getSpeedModifier());
-                currentHealthState = newHealthState;
+            // Update GenericState modifier
+            if (newGenericState != currentGenericState) {
+                blockBreakSpeedAttribute.removeModifier(currentGenericState.getModifier());
+                blockBreakSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
             }
         }
-         **/
 
+        if (attackDamageAttribute != null) {
+            if (newGenericState != currentGenericState) {
+                attackDamageAttribute.removeModifier(currentGenericState.getModifier());
+                attackDamageAttribute.addPersistentModifier(newGenericState.getModifier());
+            }
+        }
 
-        // TODO: Add attack power modifier for the health states
-        // Update AttackPower modifier
-        /**
-         if (newAttackPower != currentAttackPower) {
-         attackDamageAttribute.removeModifier(currentAttackPower.getSpeedModifier());
-         attackDamageAttribute.addPersistentModifier(newAttackPower.getSpeedModifier());
-         currentAttackPower = newAttackPower;
-         }
-         **/
-
+        currentGenericState = newGenericState;
     }
 
     private void applyNauseaEffect(PlayerEntity player)
@@ -169,7 +152,7 @@ public class PlayerEffectsManager {
                 && shouldBeAffected(player))
         {
             // Additional effects for dying
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200, 1));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
         }
     }
 
