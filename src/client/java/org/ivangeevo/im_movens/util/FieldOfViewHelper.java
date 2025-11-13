@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.client;
+package org.ivangeevo.im_movens.client;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.config;
+package org.ivangeevo.im_movens.config;
 
 public class ModSettings
 {

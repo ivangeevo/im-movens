@@ -1,8 +1,8 @@
-package org.ivangeevo.immovens;
+package org.ivangeevo.im_movens;
 
 import btwr.btwr_sl.lib.event.EventHUDInitialized;
 import net.fabricmc.api.ClientModInitializer;
-import org.ivangeevo.immovens.util.ModPenalties;
+import org.ivangeevo.im_movens.util.ModPenalties;
 
 public class ImMovensModClient implements ClientModInitializer
 {

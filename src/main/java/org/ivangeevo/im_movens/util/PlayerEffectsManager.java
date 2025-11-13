@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.util;
+package org.ivangeevo.im_movens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -10,8 +10,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.sound.ImMovensSound;
+import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.sound.ImMovensSound;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class PlayerEffectsManager {

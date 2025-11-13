@@ -1,8 +1,8 @@
-package org.ivangeevo.immovens.config;
+package org.ivangeevo.im_movens.config;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.im_movens.ImMovensMod;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;

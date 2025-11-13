@@ -1,10 +1,10 @@
-package org.ivangeevo.immovens.sound;
+package org.ivangeevo.im_movens.sound;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.im_movens.ImMovensMod;
 
 public class ImMovensSound {
     private static final Identifier PLAYER_HURT_SOUND_ID = Identifier.of(ImMovensMod.MOD_ID, "hurt");

@@ -1,10 +1,10 @@
-package org.ivangeevo.immovens;
+package org.ivangeevo.im_movens;
 
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.ivangeevo.immovens.config.ModSettings;
-import org.ivangeevo.immovens.sound.ImMovensSound;
+import org.ivangeevo.im_movens.config.ModSettings;
+import org.ivangeevo.im_movens.sound.ImMovensSound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
