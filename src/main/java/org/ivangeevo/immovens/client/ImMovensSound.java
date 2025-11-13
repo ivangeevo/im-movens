@@ -7,10 +7,10 @@ import net.minecraft.util.Identifier;
 import org.ivangeevo.immovens.ImMovensMod;
 
 public class ImMovensSound {
-    private static final Identifier PLAYER_HURT_LOCATION = Identifier.of(ImMovensMod.MOD_ID, "hurt");
-    public static final SoundEvent PLAYER_HURT = SoundEvent.of(PLAYER_HURT_LOCATION);
+    private static final Identifier PLAYER_HURT_SOUND_ID = Identifier.of(ImMovensMod.MOD_ID, "hurt");
+    public static final SoundEvent PLAYER_HURT = SoundEvent.of(PLAYER_HURT_SOUND_ID);
 
     public static void register() {
-        Registry.register(Registries.SOUND_EVENT, PLAYER_HURT_LOCATION, PLAYER_HURT);
+        Registry.register(Registries.SOUND_EVENT, PLAYER_HURT_SOUND_ID, PLAYER_HURT);
     }
 }

@@ -37,14 +37,11 @@ public class PlayerEffectsManager {
     }
 
     // gets called in PlayerEntity only
-    public void onTick(PlayerEntity player)
-    {
-
+    public void onTick(PlayerEntity player) {
     }
 
     // gets called in ServerPlayerEntity only
-    public void onServerTick(PlayerEntity player)
-    {
+    public void onServerTick(PlayerEntity player) {
         this.applyNauseaEffect(player);
         this.applyBlindnessEffect(player);
         this.updateAttributes(player);
@@ -54,11 +51,10 @@ public class PlayerEffectsManager {
 
     // Determines if player should be affected by debuffs
     public boolean shouldBeAffected(PlayerEntity player) {
-        return (!player.isCreative() && !player.isSpectator() && !player.isDead());
+        return (!player.isCreative() && !player.isSpectator() && !player.isDead() && !player.isFallFlying());
     }
 
-    public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
-    {
+    public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci) {
         int foodLevel = player.getHungerManager().getFoodLevel();
         boolean fatCondition = false;
         if (ImMovensMod.isHungerGranular) {
@@ -132,8 +128,7 @@ public class PlayerEffectsManager {
         currentGenericState = newGenericState;
     }
 
-    private void applyNauseaEffect(PlayerEntity player)
-    {
+    private void applyNauseaEffect(PlayerEntity player) {
         if (player.getHungerManager().getFoodLevel() <= 0
                 && player.age % NAUSEA_TICKS == 0
                 && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
@@ -144,8 +139,7 @@ public class PlayerEffectsManager {
         }
     }
 
-    private void applyBlindnessEffect(PlayerEntity player)
-    {
+    private void applyBlindnessEffect(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity
                 && player.getHealth() <= 2
                 && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
@@ -157,8 +151,7 @@ public class PlayerEffectsManager {
     }
 
 
-    private void applySlowHealing(PlayerEntity player)
-    {
+    private void applySlowHealing(PlayerEntity player) {
         if (player.age % 600 == 0 && player.getHealth() < player.getMaxHealth()
                 && player.getHungerManager().getFoodLevel() >= 9
                 && ImMovensMod.getSettings().isNaturalRegenEnabled()
