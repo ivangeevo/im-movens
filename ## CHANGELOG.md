@@ -1,3 +1,8 @@
+## v1.7(dev)
++ Fixed the player making ambient hurt noises while flying with an elytra
++ Split client side logic into its own package
++ Updated the mod to Fabric API 0.116.7, & Fabric Loader 0.17.3 & BTWR: Shared Library 0.62
+
 ## v1.6
 This update brings compatibility with the Granular Hunger mod by Tetro48 and a few more bug fixes/features for the mod from him as well. Thanks for those :)
 

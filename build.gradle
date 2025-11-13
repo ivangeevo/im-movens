@@ -13,7 +13,7 @@ base {
 repositories {
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
-    maven { url "https://ivangeevo.github.io/btwr-shared-lib/" }
+    maven { url "https://api.modrinth.com/maven" }
 }
 
 loom {
@@ -41,7 +41,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation("org.ivangeevo:btwr-shared-lib:${project.btwr_sl_version}")
+    modImplementation "maven.modrinth:btwr-shared-library:${project.btwr_sl_version}"
     modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 
