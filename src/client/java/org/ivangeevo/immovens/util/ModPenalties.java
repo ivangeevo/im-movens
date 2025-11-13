@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.client;
+package org.ivangeevo.immovens.util;
 
 import btwr.btwr_sl.lib.gui.HUDInitializeListener;
 import btwr.btwr_sl.lib.gui.PenaltyDisplayManager;

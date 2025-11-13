@@ -3,8 +3,8 @@ package org.ivangeevo.immovens;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.ivangeevo.immovens.client.ImMovensSound;
 import org.ivangeevo.immovens.config.ModSettings;
+import org.ivangeevo.immovens.sound.ImMovensSound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

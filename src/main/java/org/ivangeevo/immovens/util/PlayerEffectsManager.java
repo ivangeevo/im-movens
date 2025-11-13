@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.client.ImMovensSound;
+import org.ivangeevo.immovens.sound.ImMovensSound;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class PlayerEffectsManager {

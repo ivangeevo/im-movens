@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.client;
+package org.ivangeevo.immovens.sound;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;

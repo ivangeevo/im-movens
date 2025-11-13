@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "org.ivangeevo.immovens.client.ImMovensModClient"
+      "org.ivangeevo.immovens.ImMovensModClient"
     ],
     "main": [
       "org.ivangeevo.immovens.ImMovensMod"
