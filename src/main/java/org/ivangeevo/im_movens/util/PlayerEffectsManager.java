@@ -49,9 +49,9 @@ public class PlayerEffectsManager {
         this.doHurtNoise(player);
     }
 
-    // Determines if player should be affected by debuffs
+    // Determines if debuffs should affect player
     public boolean shouldBeAffected(PlayerEntity player) {
-        return (!player.isCreative() && !player.isSpectator() && !player.isDead() && !player.isFallFlying());
+        return (!player.isCreative() && !player.isSpectator() && !player.isDead());
     }
 
     public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci) {
@@ -166,15 +166,31 @@ public class PlayerEffectsManager {
      * @param player PlayerEntity to play sound from
      */
     private void doHurtNoise(PlayerEntity player) {
-        // Process hurt sound
-        boolean doHurt =
-            ImMovensMod.getSettings().hasPainSounds() &&               // Pain sounds enabled
-            (int) player.distanceTraveled > distToNextHurtSound &&              // Player is over threshold
-            ImMovensMod.getSettings().isHealthPenaltiesEnabled() &&    // Health statuses enabled
-            player.getHealth() <= THRESHOLD_FOR_NOISE &&                        // Player's health is low enough
-            shouldBeAffected(player);                                           // Player is not in creative
+        // Process hurt sound check
+        boolean doPainSound =
+                // Pain sounds enabled
+            ImMovensMod.getSettings().hasPainSounds()
+                    // Player is over the sound threshold
+                    && (int) player.distanceTraveled > distToNextHurtSound
+                    // Are health statuses enabled?
+                    && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
+                    // Player's health is low enough
+                    && player.getHealth() <= THRESHOLD_FOR_NOISE
+                    // Player is not in creative/spectator mode
+                    && shouldBeAffected(player);
 
-        if (doHurt && !player.getWorld().isClient) {
+        // Should the player do hurt sound when sneaking?
+        boolean sneakingBlocks =
+                player.isSneaking() && !ImMovensMod.getSettings().hasSneakingPainSounds();
+
+        boolean flyingBlocks = player.isFallFlying();
+
+        // General restriction check for when the player is moving
+        // Should play hurt sound if sneaking or if not elytra flying
+        boolean isRestrictedByMovement = sneakingBlocks || flyingBlocks;
+
+
+        if ((doPainSound && !isRestrictedByMovement) && !player.getWorld().isClient) {
             // Player meets criteria for making hurt sound
             player.playSoundToPlayer(ImMovensSound.PLAYER_HURT, SoundCategory.PLAYERS,
                     0.5f, pitchFromHealth(player) + Random.create().nextFloat() * 0.1f);
@@ -187,8 +203,7 @@ public class PlayerEffectsManager {
      * @param player PlayerEntity to pull distance from
      */
     public void setNextDistToHurtSound(PlayerEntity player) {
-        distToNextHurtSound = player.distanceTraveled + (
-                4.0f * (player.getHealth() / THRESHOLD_FOR_NOISE));
+        distToNextHurtSound = player.distanceTraveled + (4.0f * (player.getHealth() / THRESHOLD_FOR_NOISE));
     }
 
     /**

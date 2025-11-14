@@ -43,8 +43,9 @@ public class ImMovensMod implements ModInitializer
     public void onInitialize() {
         LOGGER.info("Initializing Im'movens.");
 
-        // Register sounds, load settings
+        // Register sounds
         ImMovensSound.register();
+        // Load config settings
         loadSettings();
 
         //this is done to reduce unneeded compute cost
@@ -54,11 +55,6 @@ public class ImMovensMod implements ModInitializer
         // Set instance
         instance = this;
     }
-
-    /**
-     * Config loading and saving from Tough Environment (CC-BY-4.0)
-     * @link <a href="https://github.com/ivangeevo/tough_environment/blob/1.21.1/release/src/main/java/org/tough_environment/ToughEnvironmentMod.java">Source</a>
-     */
 
     public void loadSettings() {
         File file = new File(CONFIG_FILE_LOCATION);

@@ -4,7 +4,8 @@
   "package": "org.ivangeevo.im_movens.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "AbstractClientPlayerEntityMixin"
+    "AbstractClientPlayerEntityMixin",
+    "ClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

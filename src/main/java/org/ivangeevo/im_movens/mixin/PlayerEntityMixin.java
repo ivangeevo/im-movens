@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerEntityMixin
 {
 
-    @Unique private PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+    @Unique private PlayerEntity playerEntity = (PlayerEntity)(Object)this;
 
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
 

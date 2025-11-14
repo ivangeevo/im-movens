@@ -1,4 +1,6 @@
 ## v1.7(dev)
++ Added check and a configuration option for the player making ambient hurt noises while sneaking. This is probably useful for SMP and especially PvP situations where hurt players wouldn't want to be heard by other players trying to kill them
++ Added a configuration option to set the hunger level at which sprinting should be disabled. By default, it's 8.0 (Four hunger shanks (Peckish))
 + Fixed the player making ambient hurt noises while flying with an elytra
 + Split client side logic into its own package
 + Updated the mod to Fabric API 0.116.7, & Fabric Loader 0.17.3 & BTWR: Shared Library 0.62

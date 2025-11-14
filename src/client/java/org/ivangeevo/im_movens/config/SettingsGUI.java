@@ -36,6 +36,23 @@ public class SettingsGUI
                 .build()
         );
 
+        general.addEntry(entryBuilder
+                .startBooleanToggle(Text.translatable("config.im_movens.sneaking_pain_sounds"), settingsCommon.doSneakingPainSounds)
+                .setRequirement(() -> settingsCommon.doPainSounds)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> settingsCommon.doSneakingPainSounds = newValue)
+                .setTooltip(Text.translatable("config.im_movens.tooltip.sneaking_pain_sounds"))
+                .build()
+        );
+
+        general.addEntry(entryBuilder
+                .startFloatField(Text.translatable("config.im_movens.sprinting_disabled_hunger_level"), settingsCommon.getSprintingDisabledHungerLevel())
+                .setDefaultValue(8.0f)
+                .setSaveConsumer(newValue -> settingsCommon.sprintingDisabledHungerLevel = newValue)
+                .setTooltip(Text.translatable("config.im_movens.tooltip.sprinting_disabled_hunger_level"))
+                .build()
+        );
+
         /** Gameplay Category **/
         ConfigCategory gameplay = builder.getOrCreateCategory(Text.translatable("config.im_movens.category.gameplay"));
         gameplay.addEntry(entryBuilder
