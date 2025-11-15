@@ -1,3 +1,5 @@
+## v???(dev)
+
 ## v1.7
 + Added check and a configuration option for the player making ambient hurt noises while sneaking. This is probably useful for SMP and especially PvP situations where hurt players wouldn't want to be heard by other players trying to kill them
 + Added a configuration option to set the hunger level at which sprinting should be disabled. By default, it's 8.0 (Four hunger shanks (Peckish))
