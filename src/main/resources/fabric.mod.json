@@ -14,18 +14,16 @@
   "icon": "assets/im_movens/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "org.ivangeevo.immovens.client.ImMovensModClient"
-    ],
-    "main": [
-      "org.ivangeevo.immovens.ImMovensMod"
-    ],
-    "modmenu": [
-      "org.ivangeevo.immovens.config.ImMovensConfig"
-    ]
+    "client": ["org.ivangeevo.im_movens.ImMovensModClient"],
+    "main": ["org.ivangeevo.im_movens.ImMovensMod"],
+    "modmenu": ["org.ivangeevo.im_movens.config.ImMovensConfig"]
   },
   "mixins": [
-    "im-movens.mixins.json"
+    "im-movens.mixins.json",
+    {
+      "config": "im-movens.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

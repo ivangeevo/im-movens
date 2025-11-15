@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.mixin.client;
+package org.ivangeevo.im_movens.mixin.client;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.MinecraftClient;
@@ -6,8 +6,8 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.client.FieldOfViewHelper;
+import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.client.FieldOfViewHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;

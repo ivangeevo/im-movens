@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.util;
+package org.ivangeevo.im_movens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -10,8 +10,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.client.ImMovensSound;
+import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.sound.ImMovensSound;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class PlayerEffectsManager {
@@ -37,14 +37,11 @@ public class PlayerEffectsManager {
     }
 
     // gets called in PlayerEntity only
-    public void onTick(PlayerEntity player)
-    {
-
+    public void onTick(PlayerEntity player) {
     }
 
     // gets called in ServerPlayerEntity only
-    public void onServerTick(PlayerEntity player)
-    {
+    public void onServerTick(PlayerEntity player) {
         this.applyNauseaEffect(player);
         this.applyBlindnessEffect(player);
         this.updateAttributes(player);
@@ -52,13 +49,12 @@ public class PlayerEffectsManager {
         this.doHurtNoise(player);
     }
 
-    // Determines if player should be affected by debuffs
+    // Determines if debuffs should affect player
     public boolean shouldBeAffected(PlayerEntity player) {
         return (!player.isCreative() && !player.isSpectator() && !player.isDead());
     }
 
-    public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci)
-    {
+    public void disableJumpIfLow(PlayerEntity player, CallbackInfo ci) {
         int foodLevel = player.getHungerManager().getFoodLevel();
         boolean fatCondition = false;
         if (ImMovensMod.isHungerGranular) {
@@ -132,8 +128,7 @@ public class PlayerEffectsManager {
         currentGenericState = newGenericState;
     }
 
-    private void applyNauseaEffect(PlayerEntity player)
-    {
+    private void applyNauseaEffect(PlayerEntity player) {
         if (player.getHungerManager().getFoodLevel() <= 0
                 && player.age % NAUSEA_TICKS == 0
                 && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
@@ -144,8 +139,7 @@ public class PlayerEffectsManager {
         }
     }
 
-    private void applyBlindnessEffect(PlayerEntity player)
-    {
+    private void applyBlindnessEffect(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity
                 && player.getHealth() <= 2
                 && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
@@ -157,8 +151,7 @@ public class PlayerEffectsManager {
     }
 
 
-    private void applySlowHealing(PlayerEntity player)
-    {
+    private void applySlowHealing(PlayerEntity player) {
         if (player.age % 600 == 0 && player.getHealth() < player.getMaxHealth()
                 && player.getHungerManager().getFoodLevel() >= 9
                 && ImMovensMod.getSettings().isNaturalRegenEnabled()
@@ -173,15 +166,31 @@ public class PlayerEffectsManager {
      * @param player PlayerEntity to play sound from
      */
     private void doHurtNoise(PlayerEntity player) {
-        // Process hurt sound
-        boolean doHurt =
-            ImMovensMod.getSettings().hasPainSounds() &&               // Pain sounds enabled
-            (int) player.distanceTraveled > distToNextHurtSound &&              // Player is over threshold
-            ImMovensMod.getSettings().isHealthPenaltiesEnabled() &&    // Health statuses enabled
-            player.getHealth() <= THRESHOLD_FOR_NOISE &&                        // Player's health is low enough
-            shouldBeAffected(player);                                           // Player is not in creative
+        // Process hurt sound check
+        boolean doPainSound =
+                // Pain sounds enabled
+            ImMovensMod.getSettings().hasPainSounds()
+                    // Player is over the sound threshold
+                    && (int) player.distanceTraveled > distToNextHurtSound
+                    // Are health statuses enabled?
+                    && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
+                    // Player's health is low enough
+                    && player.getHealth() <= THRESHOLD_FOR_NOISE
+                    // Player is not in creative/spectator mode
+                    && shouldBeAffected(player);
 
-        if (doHurt && !player.getWorld().isClient) {
+        // Should the player do hurt sound when sneaking?
+        boolean sneakingBlocks =
+                player.isSneaking() && !ImMovensMod.getSettings().hasSneakingPainSounds();
+
+        boolean flyingBlocks = player.isFallFlying();
+
+        // General restriction check for when the player is moving
+        // Should play hurt sound if sneaking or if not elytra flying
+        boolean isRestrictedByMovement = sneakingBlocks || flyingBlocks;
+
+
+        if ((doPainSound && !isRestrictedByMovement) && !player.getWorld().isClient) {
             // Player meets criteria for making hurt sound
             player.playSoundToPlayer(ImMovensSound.PLAYER_HURT, SoundCategory.PLAYERS,
                     0.5f, pitchFromHealth(player) + Random.create().nextFloat() * 0.1f);
@@ -194,8 +203,7 @@ public class PlayerEffectsManager {
      * @param player PlayerEntity to pull distance from
      */
     public void setNextDistToHurtSound(PlayerEntity player) {
-        distToNextHurtSound = player.distanceTraveled + (
-                4.0f * (player.getHealth() / THRESHOLD_FOR_NOISE));
+        distToNextHurtSound = player.distanceTraveled + (4.0f * (player.getHealth() / THRESHOLD_FOR_NOISE));
     }
 
     /**

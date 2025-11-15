@@ -1,12 +1,10 @@
-package org.ivangeevo.immovens;
+package org.ivangeevo.im_movens;
 
-import btwr.btwr_sl.lib.event.EventHUDInitialized;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.ivangeevo.immovens.client.ImMovensSound;
-import org.ivangeevo.immovens.client.ModPenalties;
-import org.ivangeevo.immovens.config.ModSettings;
+import org.ivangeevo.im_movens.config.ModSettings;
+import org.ivangeevo.im_movens.sound.ImMovensSound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +23,8 @@ public class ImMovensMod implements ModInitializer
 
     public static boolean isHungerGranular = false;
 
+    private static final String CONFIG_FILE_LOCATION = "./config/btwr/immovensCommon.json";
+
     /**
      * Getter for current ImMovensMod instance
      */
@@ -40,12 +40,12 @@ public class ImMovensMod implements ModInitializer
     }
 
     @Override
-    public void onInitialize()
-    {
+    public void onInitialize() {
         LOGGER.info("Initializing Im'movens.");
 
-        // Register sounds, load settings
+        // Register sounds
         ImMovensSound.register();
+        // Load config settings
         loadSettings();
 
         //this is done to reduce unneeded compute cost
@@ -56,14 +56,8 @@ public class ImMovensMod implements ModInitializer
         instance = this;
     }
 
-    /**
-     * Config loading and saving from Tough Environment (CC-BY-4.0)
-     * @link <a href="https://github.com/ivangeevo/tough_environment/blob/1.21.1/release/src/main/java/org/tough_environment/ToughEnvironmentMod.java">Source</a>
-     */
-
-    // Do not remove this comment or the project will NOT compile!
     public void loadSettings() {
-        File file = new File("./config/btwr/immovensCommon.json");
+        File file = new File(CONFIG_FILE_LOCATION);
         Gson gson = new Gson();
         if (file.exists()) {
             try {
@@ -71,7 +65,7 @@ public class ImMovensMod implements ModInitializer
                 settings = gson.fromJson(fileReader, ModSettings.class);
                 fileReader.close();
             } catch (IOException e) {
-                LOGGER.warn("Could not load Im'movens settings: " + e.getLocalizedMessage());
+                LOGGER.warn("Could not load Im 'movens settings: " + e.getLocalizedMessage());
             }
         } else {
             settings = new ModSettings();
@@ -80,7 +74,7 @@ public class ImMovensMod implements ModInitializer
 
     public void saveSettings() {
         Gson gson = new Gson();
-        File file = new File("./config/btwr/immovensCommon.json");
+        File file = new File(CONFIG_FILE_LOCATION);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdir();
         }
@@ -89,7 +83,7 @@ public class ImMovensMod implements ModInitializer
             fileWriter.write(gson.toJson(settings));
             fileWriter.close();
         } catch (IOException e) {
-            LOGGER.warn("Could not save Im'movens settings: " + e.getLocalizedMessage());
+            LOGGER.warn("Could not save Im 'movens settings: " + e.getLocalizedMessage());
         }
     }
 

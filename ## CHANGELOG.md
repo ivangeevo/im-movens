@@ -1,3 +1,10 @@
+## v1.7
++ Added check and a configuration option for the player making ambient hurt noises while sneaking. This is probably useful for SMP and especially PvP situations where hurt players wouldn't want to be heard by other players trying to kill them
++ Added a configuration option to set the hunger level at which sprinting should be disabled. By default, it's 8.0 (Four hunger shanks (Peckish))
++ Fixed the player making ambient hurt noises while flying with an elytra
++ Split client side logic into its own package
++ Updated the mod to Fabric API 0.116.7, & Fabric Loader 0.17.3 & BTWR: Shared Library 0.62
+
 ## v1.6
 This update brings compatibility with the Granular Hunger mod by Tetro48 and a few more bug fixes/features for the mod from him as well. Thanks for those :)
 
@@ -6,6 +13,7 @@ This update brings compatibility with the Granular Hunger mod by Tetro48 and a f
 - Added display texts for Fat penalties from the Granular Hunger mod to display when hunger gets lower.
 - Code changes to account if the mod is installed and get the proper hunger value in that case for displaying hunger penalties
 - Fixed a bug with penalties like crippled or famished stacking their effects in a wrong way causing different values than expected
+
 #### Other changes:
 + Added functionality where the player's attack damage and block breaking speed will get affected when at low health/hunger as well
 + Fixed (added) missing hunger level display state ("Emaciated") to display when the player is 1 shank or lower (after "Famished") 
@@ -13,7 +21,7 @@ This update brings compatibility with the Granular Hunger mod by Tetro48 and a f
 
 ## v1.5
 
-### Another set of changes by jeffyjamzhd
+#### Another set of changes by jeffyjamzhd
 + Integrate BTWRSL as a new dependency, pulling from the GitHub maven
 + Update translation keys to all use the same namespace im_movens
 + Translation keys have been added for all penalties and the ambient pain noises
@@ -27,15 +35,15 @@ This update brings compatibility with the Granular Hunger mod by Tetro48 and a f
 + Updated mod description to display properly in the mod lists & updated to correct license (CC-BY-4.0)
 + Updated the mod to Fabric Loader 0.16.10 & Fabric API 0.115.3
 
-### Big thanks to jeffyjamzhd for providing some big quality of life changes.
+#### Big thanks to jeffyjamzhd for providing some big quality of life changes.
 
-### They are as follows:
+#### They are as follows:
 
 + Fix issues that are present with the existing renderer
 + Have closer parity with Better Than Wolves
 + Have implicit compatibility with mods that alter how the hotbar is rendered, and those that rearrange and remove status bars
 
-### New functionality has also been added:
+#### New functionality has also been added:
 
 + Penalties no longer affect the player in creative, spectator, or on death
 + Disable FOV scaling when penalties are in effect, which is compatible with mods with a similar option (e.g. Blockrunner)

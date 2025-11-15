@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.mixin;
+package org.ivangeevo.im_movens.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
@@ -6,11 +6,7 @@ import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.math.random.Random;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.client.ImMovensSound;
-import org.ivangeevo.immovens.util.PlayerEffectsManager;
+import org.ivangeevo.im_movens.util.PlayerEffectsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin
 {
-    @Unique private PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+    @Unique private PlayerEntity playerEntity = (PlayerEntity)(Object)this;
 
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
 

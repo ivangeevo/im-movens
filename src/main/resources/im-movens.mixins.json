@@ -1,15 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.ivangeevo.immovens.mixin",
+  "package": "org.ivangeevo.im_movens.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin"
-  ],
-  "client": [
-    "client.InGameHudMixin",
-    "client.AbstractClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

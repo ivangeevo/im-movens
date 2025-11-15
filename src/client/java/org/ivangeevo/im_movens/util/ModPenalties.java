@@ -1,4 +1,4 @@
-package org.ivangeevo.immovens.client;
+package org.ivangeevo.im_movens.util;
 
 import btwr.btwr_sl.lib.gui.HUDInitializeListener;
 import btwr.btwr_sl.lib.gui.PenaltyDisplayManager;
@@ -7,8 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.util.PlayerEffectsManager;
+import org.ivangeevo.im_movens.ImMovensMod;
 
 public class ModPenalties implements HUDInitializeListener {
     /**

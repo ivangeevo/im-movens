@@ -1,10 +1,10 @@
-package org.ivangeevo.immovens.util;
+package org.ivangeevo.im_movens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import org.ivangeevo.immovens.ImMovensMod;
+import org.ivangeevo.im_movens.ImMovensMod;
 
 public class StatusEffectUtils {
 

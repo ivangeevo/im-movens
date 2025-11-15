@@ -1,8 +1,8 @@
-package org.ivangeevo.immovens.mixin;
+package org.ivangeevo.im_movens.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
-import org.ivangeevo.immovens.ImMovensMod;
-import org.ivangeevo.immovens.util.PlayerEffectsManager;
+import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.util.PlayerEffectsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerEntityMixin
 {
 
-    @Unique private PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+    @Unique private PlayerEntity playerEntity = (PlayerEntity)(Object)this;
 
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
 
