@@ -21,7 +21,7 @@ This update brings compatibility with the Granular Hunger mod by Tetro48 and a f
 
 ## v1.5
 
-### Another set of changes by jeffyjamzhd
+#### Another set of changes by jeffyjamzhd
 + Integrate BTWRSL as a new dependency, pulling from the GitHub maven
 + Update translation keys to all use the same namespace im_movens
 + Translation keys have been added for all penalties and the ambient pain noises
@@ -35,15 +35,15 @@ This update brings compatibility with the Granular Hunger mod by Tetro48 and a f
 + Updated mod description to display properly in the mod lists & updated to correct license (CC-BY-4.0)
 + Updated the mod to Fabric Loader 0.16.10 & Fabric API 0.115.3
 
-### Big thanks to jeffyjamzhd for providing some big quality of life changes.
+#### Big thanks to jeffyjamzhd for providing some big quality of life changes.
 
-### They are as follows:
+#### They are as follows:
 
 + Fix issues that are present with the existing renderer
 + Have closer parity with Better Than Wolves
 + Have implicit compatibility with mods that alter how the hotbar is rendered, and those that rearrange and remove status bars
 
-### New functionality has also been added:
+#### New functionality has also been added:
 
 + Penalties no longer affect the player in creative, spectator, or on death
 + Disable FOV scaling when penalties are in effect, which is compatible with mods with a similar option (e.g. Blockrunner)
