@@ -33,7 +33,7 @@ abstract class AbstractClientPlayerEntityMixin extends PlayerEntity {
     public float getFieldOfViewModifier(float fovModifier) {
         PlayerEntity player = MinecraftClient.getInstance().player;
         // FOV scaling disabled
-        if (player != null && !ImMovensMod.getInstance().settings.isFOVScalingEnabled()) {
+        if (player != null && !ImMovensMod.getSettings().isFOVScalingEnabled()) {
             // Figure out the modifier without Im'movens, apply difference to existing modifier
             float newFov = FieldOfViewHelper.getFieldOfViewModifierWithoutSpeed(this);
             return fovModifier - (fovModifier - newFov);
