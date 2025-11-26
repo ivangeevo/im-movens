@@ -1,7 +1,7 @@
 package org.ivangeevo.im_movens.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
-import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.config.ImMovensConfig;
 import org.ivangeevo.im_movens.util.PlayerEffectsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,11 +12,9 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin
-{
+public abstract class PlayerEntityMixin {
 
     @Unique private PlayerEntity playerEntity = (PlayerEntity)(Object)this;
-
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
 
     /**
@@ -33,7 +31,7 @@ public abstract class PlayerEntityMixin
      **/
     @ModifyConstant(method = "jump", constant = @Constant(floatValue = 0.2f))
     private float modifySprintJump(float constant){
-        return (ImMovensMod.getSettings().isHardcoreHungerEnabled()) ? 1.00f : constant;
+        return (ImMovensConfig.Settings.hardcoreExhaustion).get() ? 1.00f : constant;
     }
 
     /**
@@ -42,6 +40,7 @@ public abstract class PlayerEntityMixin
      **/
     @ModifyConstant(method = "jump", constant = @Constant(floatValue = 0.05f))
     private float modifyJump(float constant){
-        return (ImMovensMod.getSettings().isHardcoreHungerEnabled()) ? 0.40f : constant;
+        return (ImMovensConfig.Settings.hardcoreExhaustion.get()) ? 0.40f : constant;
     }
+
 }

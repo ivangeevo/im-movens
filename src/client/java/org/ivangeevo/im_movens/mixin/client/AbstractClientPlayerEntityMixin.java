@@ -6,8 +6,8 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.ivangeevo.im_movens.ImMovensMod;
-import org.ivangeevo.im_movens.client.FieldOfViewHelper;
+import org.ivangeevo.im_movens.config.ImMovensConfig;
+import org.ivangeevo.im_movens.util.FieldOfViewHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -33,7 +33,7 @@ abstract class AbstractClientPlayerEntityMixin extends PlayerEntity {
     public float getFieldOfViewModifier(float fovModifier) {
         PlayerEntity player = MinecraftClient.getInstance().player;
         // FOV scaling disabled
-        if (player != null && !ImMovensMod.getSettings().isFOVScalingEnabled()) {
+        if (player != null && !ImMovensConfig.Settings.fovScaling.get()) {
             // Figure out the modifier without Im'movens, apply difference to existing modifier
             float newFov = FieldOfViewHelper.getFieldOfViewModifierWithoutSpeed(this);
             return fovModifier - (fovModifier - newFov);
@@ -43,4 +43,5 @@ abstract class AbstractClientPlayerEntityMixin extends PlayerEntity {
             return fovModifier;
         }
     }
+
 }

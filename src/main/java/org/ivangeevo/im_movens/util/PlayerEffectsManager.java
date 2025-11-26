@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.ivangeevo.im_movens.ImMovensMod;
+import org.ivangeevo.im_movens.config.ImMovensConfig;
 import org.ivangeevo.im_movens.sound.ImMovensSound;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -62,15 +63,17 @@ public class PlayerEffectsManager {
             foodLevel = MathHelper.ceil(foodLevel / 3d);
             float fatLevel = player.getHungerManager().getSaturationLevel();
             fatCondition = fatLevel > 54
-                    && ImMovensMod.getSettings().isFatPenaltiesEnabled();
+                    && ImMovensConfig.Settings.fatPenalties.get();
         }
         boolean hungerCondition = foodLevel <= 4
-                && ImMovensMod.getSettings().isHungerPenaltiesEnabled();
+                && ImMovensConfig.Settings.hungerPenalties.get();
         boolean healthCondition = player.getHealth() <= 4
-                && ImMovensMod.getSettings().isHealthPenaltiesEnabled();
+                && ImMovensConfig.Settings.healthPenalties.get();
 
         if ((hungerCondition || healthCondition || fatCondition) && shouldBeAffected(player))
-        { ci.cancel(); }
+        {
+            ci.cancel();
+        }
     }
 
     private void updateAttributes(PlayerEntity player) {
@@ -93,7 +96,8 @@ public class PlayerEffectsManager {
             // Revert if player shouldn't be affected at this time
             if (!shouldBeAffected(player)) {
                 movementSpeedAttribute.removeModifier(currentGenericState.getModifier());
-            } else if (shouldBeAffected(player)) {
+            }
+            else if (shouldBeAffected(player)) {
                 if (!movementSpeedAttribute.hasModifier(currentGenericState.getModifier().id()))
                     movementSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
             }
@@ -109,8 +113,7 @@ public class PlayerEffectsManager {
             }
         }
 
-        if (blockBreakSpeedAttribute != null)
-        {
+        if (blockBreakSpeedAttribute != null) {
             // Update GenericState modifier
             if (newGenericState != currentGenericState) {
                 blockBreakSpeedAttribute.removeModifier(currentGenericState.getModifier());
@@ -131,7 +134,7 @@ public class PlayerEffectsManager {
     private void applyNauseaEffect(PlayerEntity player) {
         if (player.getHungerManager().getFoodLevel() <= 0
                 && player.age % NAUSEA_TICKS == 0
-                && ImMovensMod.getSettings().isHungerPenaltiesEnabled())
+                && ImMovensConfig.Settings.hungerPenalties.get())
         {
             player.addStatusEffect(
                     new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true)
@@ -142,7 +145,7 @@ public class PlayerEffectsManager {
     private void applyBlindnessEffect(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity
                 && player.getHealth() <= 2
-                && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
+                && ImMovensConfig.Settings.healthPenalties.get()
                 && shouldBeAffected(player))
         {
             // Additional effects for dying
@@ -154,7 +157,7 @@ public class PlayerEffectsManager {
     private void applySlowHealing(PlayerEntity player) {
         if (player.age % 600 == 0 && player.getHealth() < player.getMaxHealth()
                 && player.getHungerManager().getFoodLevel() >= 9
-                && ImMovensMod.getSettings().isNaturalRegenEnabled()
+                && ImMovensConfig.Settings.naturalRegen.get()
                 && shouldBeAffected(player))
         {
             player.heal(1.0f);
@@ -169,11 +172,11 @@ public class PlayerEffectsManager {
         // Process hurt sound check
         boolean doPainSound =
                 // Pain sounds enabled
-            ImMovensMod.getSettings().hasPainSounds()
+                ImMovensConfig.Settings.painSounds.get()
                     // Player is over the sound threshold
                     && (int) player.distanceTraveled > distToNextHurtSound
                     // Are health statuses enabled?
-                    && ImMovensMod.getSettings().isHealthPenaltiesEnabled()
+                    && ImMovensConfig.Settings.healthPenalties.get()
                     // Player's health is low enough
                     && player.getHealth() <= THRESHOLD_FOR_NOISE
                     // Player is not in creative/spectator mode
@@ -181,7 +184,7 @@ public class PlayerEffectsManager {
 
         // Should the player do hurt sound when sneaking?
         boolean sneakingBlocks =
-                player.isSneaking() && !ImMovensMod.getSettings().hasSneakingPainSounds();
+                player.isSneaking() && !ImMovensConfig.Settings.sneakingPainSounds.get();
 
         boolean flyingBlocks = player.isFallFlying();
 
