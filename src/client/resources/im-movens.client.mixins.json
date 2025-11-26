@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.ivangeevo.im_movens.mixin.client",
+  "package": "org.btwr.im_movens.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
     "AbstractClientPlayerEntityMixin",

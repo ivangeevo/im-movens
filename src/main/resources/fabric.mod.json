@@ -14,10 +14,18 @@
   "icon": "assets/im_movens/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": ["org.ivangeevo.im_movens.ImMovensModClient"],
-    "main": ["org.ivangeevo.im_movens.ImMovensMod"],
-    "fabric-datagen": ["org.ivangeevo.im_movens.datagen.ImMovensDataGenerator"],
-    "modmenu": ["org.ivangeevo.im_movens.config.ImMovenModMenu"]
+    "client": [
+      "org.btwr.im_movens.ImMovensModClient"
+    ],
+    "main": [
+      "org.btwr.im_movens.ImMovensMod"
+    ],
+    "fabric-datagen": [
+      "org.btwr.im_movens.datagen.ImMovensDataGenerator"
+    ],
+    "modmenu": [
+      "org.btwr.im_movens.config.ImMovenModMenu"
+    ]
   },
   "mixins": [
     "im-movens.mixins.json",
