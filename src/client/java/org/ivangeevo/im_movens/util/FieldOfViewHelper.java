@@ -1,4 +1,4 @@
-package org.ivangeevo.im_movens.client;
+package org.ivangeevo.im_movens.util;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -75,4 +75,5 @@ public class FieldOfViewHelper {
 
         return attribute.getAttribute().value().clamp(baseValueCopy);
     }
+
 }
