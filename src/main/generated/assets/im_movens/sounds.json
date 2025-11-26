@@ -1,0 +1,8 @@
+{
+  "player.hurt": {
+    "sounds": [
+      "im_movens:hurt"
+    ],
+    "subtitle": "sound.im_movens.hurt"
+  }
+}

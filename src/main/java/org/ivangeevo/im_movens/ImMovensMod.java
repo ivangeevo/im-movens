@@ -3,7 +3,7 @@ package org.ivangeevo.im_movens;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.ivangeevo.im_movens.config.ImMovensConfig;
-import org.ivangeevo.im_movens.sound.ImMovensSound;
+import org.ivangeevo.im_movens.sound.ImMovensSoundEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public class ImMovensMod implements ModInitializer {
         ImMovensConfig.register();
 
         // Register sounds
-        ImMovensSound.register();
+        ImMovensSoundEvents.register();
 
         //this is done to reduce unneeded compute cost
         if (FabricLoader.getInstance().isModLoaded("granular_hunger")) {

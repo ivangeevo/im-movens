@@ -106,4 +106,5 @@ public class ImMovensLangProvider extends FabricLanguageProvider {
     private void addConfigTooltip(String path, String translation, TranslationBuilder tb) {
         tb.add("config." + ImMovensMod.MOD_ID + ".tooltip." + path, translation);
     }
+
 }

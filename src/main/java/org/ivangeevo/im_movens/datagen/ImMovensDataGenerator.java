@@ -14,4 +14,5 @@ public class ImMovensDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ImMovensLangProvider::new);
         pack.addProvider(ImMovensSoundsProvider::new);
     }
+
 }
