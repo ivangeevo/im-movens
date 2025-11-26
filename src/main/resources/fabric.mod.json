@@ -16,7 +16,8 @@
   "entrypoints": {
     "client": ["org.ivangeevo.im_movens.ImMovensModClient"],
     "main": ["org.ivangeevo.im_movens.ImMovensMod"],
-    "modmenu": ["org.ivangeevo.im_movens.config.ImMovensConfig"]
+    "fabric-datagen": ["org.ivangeevo.im_movens.datagen.ImMovensDataGenerator"],
+    "modmenu": ["org.ivangeevo.im_movens.config.ImMovenModMenu"]
   },
   "mixins": [
     "im-movens.mixins.json",

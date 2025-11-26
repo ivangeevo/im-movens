@@ -17,19 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerPlayerEntityMixin
 {
     @Unique private PlayerEntity playerEntity = (PlayerEntity)(Object)this;
-
     @Unique private PlayerEffectsManager effectsManager = PlayerEffectsManager.getInstance();
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void calcDist(MinecraftServer server, ServerWorld world, GameProfile profile,
-                         SyncedClientOptions clientOptions, CallbackInfo ci) {
+    public void calcDist(MinecraftServer server, ServerWorld world, GameProfile profile, SyncedClientOptions clientOptions, CallbackInfo ci) {
         effectsManager.setNextDistToHurtSound(playerEntity);
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    public void applyMovementEffectsOnTick(CallbackInfo info)
-    {
+    public void applyMovementEffectsOnTick(CallbackInfo info) {
         effectsManager.onServerTick(playerEntity);
     }
-
 }
