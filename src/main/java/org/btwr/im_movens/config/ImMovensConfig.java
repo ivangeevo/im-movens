@@ -9,15 +9,12 @@ import java.util.function.Supplier;
 
 public class ImMovensConfig {
 
-    private static final String MOD_ID = ImMovensMod.MOD_ID;
-    public static final String CONFIG_FILE_LOCATION = String.format("./config/%s/%s_common", MOD_ID, MOD_ID);
-
     public static void register() {
         Reflection.initialize(Settings.class);
     }
 
     public static class Settings {
-        public static Supplier<Boolean> fovScaling;
+        public static final Supplier<Boolean> fovScaling;
         public static final Supplier<Boolean> painSounds;
         public static final Supplier<Boolean> sneakingPainSounds;
         public static final Supplier<Boolean> hardcoreExhaustion;
@@ -64,4 +61,5 @@ public class ImMovensConfig {
             builder.build();
         }
     }
+
 }

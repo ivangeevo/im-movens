@@ -1,7 +1,8 @@
-## v???(dev)
+## v0.8(or 1.8)(dev)
 + Added new datagen classes internally for making json files for new sound events by mods.
++ Changed versioning scheme from "1.x" to "0.x" for the beta releases. The mod is pretty much feature complete, but there might be some additions until I decide to make it official "release" versioning
 + Changed the "ModPenalties" code internally and made added a new API class "PenaltyTextHelper". It contains helper methods for developers to create penalty texts and also other helper methods for the default hunger, health & fat calculations
-+ Changed all configuration options setting to be handled with Supermartijn642's Config Lib internally instead of Cloth Config API, which is used only for client side config options. Cloth Config is still used for creating all screens for access through Mod Menu.
++ Changed all configuration options setting to be handled with Supermartijn642's Config Lib internally instead of Cloth Config API, which is used only for client side config options. Cloth Config is still used for creating all screens for access through Mod Menu
 + Updated the mod to BTWR: Shared Library 0.6.4
 
 ## v1.7
