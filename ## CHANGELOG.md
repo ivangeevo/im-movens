@@ -1,3 +1,10 @@
+## v0.8(or 1.8)
++ Added new datagen classes internally for making json files for new sound events by mods.
++ Changed versioning scheme from "1.x" to "0.x" for the beta releases. The mod is pretty much feature complete, but there might be some additions until I decide to make it official "release" versioning
++ Changed the "ModPenalties" code internally and made added a new API class "PenaltyTextHelper". It contains helper methods for developers to create penalty texts and also other helper methods for the default hunger, health & fat calculations
++ Changed all configuration options setting to be handled with Supermartijn642's Config Lib internally instead of Cloth Config API, which is used only for client side config options. Cloth Config is still used for creating all screens for access through Mod Menu
++ Updated the mod to BTWR: Shared Library 0.6.4
+
 ## v1.7
 + Added check and a configuration option for the player making ambient hurt noises while sneaking. This is probably useful for SMP and especially PvP situations where hurt players wouldn't want to be heard by other players trying to kill them
 + Added a configuration option to set the hunger level at which sprinting should be disabled. By default, it's 8.0 (Four hunger shanks (Peckish))
