@@ -1,3 +1,8 @@
+## v0.8.1
++ Changed all configuration options in the mod to use the custom config library added by BTWR: Shared Library. This fixes the bug from last version that crashed the game without any warnings of the missing library that created the configurations
++ Removed Supermartijn642's config lib as the one creating configuration setting as it requires itself as a dependency to work properly
++ Updated the mod to BTWR: Shared Library 0.6.5
+
 ## v0.8(or 1.8)
 + Added new datagen classes internally for making json files for new sound events by mods.
 + Changed versioning scheme from "1.x" to "0.x" for the beta releases. The mod is pretty much feature complete, but there might be some additions until I decide to make it official "release" versioning

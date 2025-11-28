@@ -31,7 +31,7 @@ public abstract class PlayerEntityMixin {
      **/
     @ModifyConstant(method = "jump", constant = @Constant(floatValue = 0.2f))
     private float modifySprintJump(float constant){
-        return (ImMovensConfig.Settings.hardcoreExhaustion).get() ? 1.00f : constant;
+        return (ImMovensConfig.hardcoreExhaustion).get() ? 1.00f : constant;
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class PlayerEntityMixin {
      **/
     @ModifyConstant(method = "jump", constant = @Constant(floatValue = 0.05f))
     private float modifyJump(float constant){
-        return (ImMovensConfig.Settings.hardcoreExhaustion.get()) ? 0.40f : constant;
+        return (ImMovensConfig.hardcoreExhaustion.get()) ? 0.40f : constant;
     }
 
 }

@@ -63,12 +63,12 @@ public class PlayerEffectsManager {
             foodLevel = MathHelper.ceil(foodLevel / 3d);
             float fatLevel = player.getHungerManager().getSaturationLevel();
             fatCondition = fatLevel > 54
-                    && ImMovensConfig.Settings.fatPenalties.get();
+                    && ImMovensConfig.fatPenalties.get();
         }
         boolean hungerCondition = foodLevel <= 4
-                && ImMovensConfig.Settings.hungerPenalties.get();
+                && ImMovensConfig.hungerPenalties.get();
         boolean healthCondition = player.getHealth() <= 4
-                && ImMovensConfig.Settings.healthPenalties.get();
+                && ImMovensConfig.healthPenalties.get();
 
         if ((hungerCondition || healthCondition || fatCondition) && shouldBeAffected(player))
         {
@@ -134,7 +134,7 @@ public class PlayerEffectsManager {
     private void applyNauseaEffect(PlayerEntity player) {
         if (player.getHungerManager().getFoodLevel() <= 0
                 && player.age % NAUSEA_TICKS == 0
-                && ImMovensConfig.Settings.hungerPenalties.get())
+                && ImMovensConfig.hungerPenalties.get())
         {
             player.addStatusEffect(
                     new StatusEffectInstance(StatusEffects.NAUSEA, 50, 7, true, true)
@@ -145,7 +145,7 @@ public class PlayerEffectsManager {
     private void applyBlindnessEffect(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity
                 && player.getHealth() <= 2
-                && ImMovensConfig.Settings.healthPenalties.get()
+                && ImMovensConfig.healthPenalties.get()
                 && shouldBeAffected(player))
         {
             // Additional effects for dying
@@ -157,7 +157,7 @@ public class PlayerEffectsManager {
     private void applySlowHealing(PlayerEntity player) {
         if (player.age % 600 == 0 && player.getHealth() < player.getMaxHealth()
                 && player.getHungerManager().getFoodLevel() >= 9
-                && ImMovensConfig.Settings.naturalRegen.get()
+                && ImMovensConfig.naturalRegen.get()
                 && shouldBeAffected(player))
         {
             player.heal(1.0f);
@@ -172,11 +172,11 @@ public class PlayerEffectsManager {
         // Process hurt sound check
         boolean doPainSound =
                 // Pain sounds enabled
-                ImMovensConfig.Settings.painSounds.get()
+                ImMovensConfig.painSounds.get()
                     // Player is over the sound threshold
                     && (int) player.distanceTraveled > distToNextHurtSound
                     // Are health statuses enabled?
-                    && ImMovensConfig.Settings.healthPenalties.get()
+                    && ImMovensConfig.healthPenalties.get()
                     // Player's health is low enough
                     && player.getHealth() <= THRESHOLD_FOR_NOISE
                     // Player is not in creative/spectator mode
@@ -184,7 +184,7 @@ public class PlayerEffectsManager {
 
         // Should the player do hurt sound when sneaking?
         boolean sneakingBlocks =
-                player.isSneaking() && !ImMovensConfig.Settings.sneakingPainSounds.get();
+                player.isSneaking() && !ImMovensConfig.sneakingPainSounds.get();
 
         boolean flyingBlocks = player.isFallFlying();
 

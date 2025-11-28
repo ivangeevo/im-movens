@@ -11,7 +11,7 @@ public abstract class ClientPlayerEntityMixin {
 
     @ModifyConstant(method = "canSprint", constant = @Constant(floatValue = 6.0f))
     private float setHungerRequired(float constant) {
-        double dValue = ImMovensConfig.Settings.sprintingDisabledHungerLevel.get();
+        double dValue = ImMovensConfig.sprintingDisabledHungerLevel.get();
         return (float) dValue;
     }
 

@@ -21,8 +21,8 @@ public class ModPenalties implements HUDInitializeListener {
 
     @Override
     public void init(MinecraftClient client, PenaltyDisplayManager dm) {
-        BooleanSupplier showHungerPenalties = () -> ImMovensConfig.Settings.hungerPenalties.get() && shouldPlayerBeAffected(client);
-        BooleanSupplier showHealthPenalties = () -> ImMovensConfig.Settings.healthPenalties.get() && shouldPlayerBeAffected(client);
+        BooleanSupplier showHungerPenalties = () -> ImMovensConfig.hungerPenalties.get() && shouldPlayerBeAffected(client);
+        BooleanSupplier showHealthPenalties = () -> ImMovensConfig.healthPenalties.get() && shouldPlayerBeAffected(client);
 
         // ---------------- HUNGER
         dm.addPenalty(make(

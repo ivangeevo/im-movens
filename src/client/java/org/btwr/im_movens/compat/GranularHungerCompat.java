@@ -18,7 +18,7 @@ public class GranularHungerCompat {
     public static void addPenaltyTextForFat() {
         PenaltyDisplayManager dm = PenaltyDisplayManager.getInstance();
         MinecraftClient client = MinecraftClient.getInstance();
-        BooleanSupplier showFatPenalties = () -> ImMovensConfig.Settings.fatPenalties.get() && shouldPlayerBeAffected(client);
+        BooleanSupplier showFatPenalties = () -> ImMovensConfig.fatPenalties.get() && shouldPlayerBeAffected(client);
 
         if (ImMovensMod.isHungerGranular) {
             dm.addPenalty(make(
