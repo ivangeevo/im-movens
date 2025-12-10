@@ -1,6 +1,7 @@
 package org.btwr.im_movens.util;
 
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -15,11 +16,17 @@ import org.btwr.im_movens.config.ImMovensConfig;
 import org.btwr.im_movens.sound.ImMovensSoundEvents;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class PlayerEffectsManager {
 
     private static final PlayerEffectsManager INSTANCE = new PlayerEffectsManager();
 
     private StatusEffectUtils.GenericState currentGenericState = StatusEffectUtils.GenericState.NORMAL;
+
+    private final Map<UUID, StatusEffectUtils.GenericState> lastState = new HashMap<>();
 
     /**
      * Block distance threshold for pain sound to occur
@@ -77,59 +84,58 @@ public class PlayerEffectsManager {
     }
 
     private void updateAttributes(PlayerEntity player) {
-        EntityAttributeInstance movementSpeedAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-        EntityAttributeInstance blockBreakSpeedAttribute = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
-        EntityAttributeInstance attackDamageAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        StatusEffectUtils.GenericState newState = StatusEffectUtils.GenericState.getStateFromPlayerStats(player);
+        StatusEffectUtils.GenericState oldState = lastState.getOrDefault(player.getUuid(), StatusEffectUtils.GenericState.NORMAL);
 
-        // Get the player's current hunger and health states
-        StatusEffectUtils.GenericState newGenericState = StatusEffectUtils.GenericState.getStateFromPlayerStats(player);
-
-        if (movementSpeedAttribute != null) {
-            // Update GenericState modifier
-            if (newGenericState != currentGenericState) {
-                movementSpeedAttribute.removeModifier(currentGenericState.getModifier());
-                movementSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
-                setNextDistToHurtSound(player);
-
-            }
-
-            // Revert if player shouldn't be affected at this time
-            if (!shouldBeAffected(player)) {
-                movementSpeedAttribute.removeModifier(currentGenericState.getModifier());
-            }
-            else if (shouldBeAffected(player)) {
-                if (!movementSpeedAttribute.hasModifier(currentGenericState.getModifier().id()))
-                    movementSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
-            }
-
-            Identifier legacyHungerModifierIdentifier = Identifier.of(ImMovensMod.MOD_ID, "hunger_speed_modifier");
-            Identifier legacyHealthModifierIdentifier = Identifier.of(ImMovensMod.MOD_ID, "health_speed_modifier");
-            //removes legacy modifiers
-            if (movementSpeedAttribute.hasModifier(legacyHungerModifierIdentifier)) {
-                movementSpeedAttribute.removeModifier(legacyHungerModifierIdentifier);
-            }
-            if (movementSpeedAttribute.hasModifier(legacyHealthModifierIdentifier)) {
-                movementSpeedAttribute.removeModifier(legacyHealthModifierIdentifier);
-            }
+        // Player should not be affected -> fully remove any modifier
+        if (!shouldBeAffected(player)) {
+            removeAllStateModifiers(player);
+            lastState.put(player.getUuid(), StatusEffectUtils.GenericState.NORMAL);
+            return;
         }
 
-        if (blockBreakSpeedAttribute != null) {
-            // Update GenericState modifier
-            if (newGenericState != currentGenericState) {
-                blockBreakSpeedAttribute.removeModifier(currentGenericState.getModifier());
-                blockBreakSpeedAttribute.addPersistentModifier(newGenericState.getModifier());
-            }
+        // No change -> nothing to do
+        if (newState == oldState) {
+            return;
         }
 
-        if (attackDamageAttribute != null) {
-            if (newGenericState != currentGenericState) {
-                attackDamageAttribute.removeModifier(currentGenericState.getModifier());
-                attackDamageAttribute.addPersistentModifier(newGenericState.getModifier());
-            }
-        }
+        EntityAttributeModifier oldMod = oldState.getModifier();
+        EntityAttributeModifier newMod = newState.getModifier();
 
-        currentGenericState = newGenericState;
+        // Affected attributes
+        EntityAttributeInstance move = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        EntityAttributeInstance breakSpd = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
+        EntityAttributeInstance dmg = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+
+        // Remove old modifier from all 3 attributes
+        if (move != null) move.removeModifier(oldMod);
+        if (breakSpd != null) breakSpd.removeModifier(oldMod);
+        if (dmg != null) dmg.removeModifier(oldMod);
+
+        // Add new modifier
+        if (move != null) move.addPersistentModifier(newMod);
+        if (breakSpd != null) breakSpd.addPersistentModifier(newMod);
+        if (dmg != null) dmg.addPersistentModifier(newMod);
+
+        // Remember new state
+        lastState.put(player.getUuid(), newState);
+
+        setNextDistToHurtSound(player);
     }
+
+    private void removeAllStateModifiers(PlayerEntity player) {
+        EntityAttributeInstance move = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        EntityAttributeInstance breakSpd = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
+        EntityAttributeInstance dmg = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+
+        for (StatusEffectUtils.GenericState state : StatusEffectUtils.GenericState.values()) {
+            EntityAttributeModifier m = state.getModifier();
+            if (move != null) move.removeModifier(m);
+            if (breakSpd != null) breakSpd.removeModifier(m);
+            if (dmg != null) dmg.removeModifier(m);
+        }
+    }
+
 
     private void applyNauseaEffect(PlayerEntity player) {
         if (player.getHungerManager().getFoodLevel() <= 0

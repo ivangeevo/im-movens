@@ -1,4 +1,5 @@
-## v???(dev)
+## v0.8.2
++ Fixed a bug with the mod in SMP where player attributes for movement speed and breaking speed were not getting updated properly, leaving the player in a slowed state
 
 ## v0.8.1
 + Changed all configuration options in the mod to use the custom config library added by BTWR: Shared Library. This fixes the bug from last version that crashed the game without any warnings of the missing library that created the configurations

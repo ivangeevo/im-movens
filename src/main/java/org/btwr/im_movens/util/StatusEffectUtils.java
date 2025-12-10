@@ -10,25 +10,24 @@ import org.btwr.im_movens.config.ImMovensConfig;
 public class StatusEffectUtils {
 
     public enum GenericState {
-        SEVERE(0.25f),
-        MAJOR(0.5f),
-        MINOR(0.75f),
-        NORMAL(1.0f);
+        SEVERE(0.25f, "severe_mod"),
+        MAJOR(0.50f, "major_mod"),
+        MINOR(0.75f, "minor_mod"),
+        NORMAL(1.00f, "normal_mod");
 
-        private final EntityAttributeModifier genericModifier;
+        private final EntityAttributeModifier modifier;
 
 
-        GenericState(float modifier)
-        {
-            this.genericModifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, "generic_modifier"),
-                    modifier - 1.0f,
+        GenericState(float multiplier, String name) {
+            this.modifier = new EntityAttributeModifier(
+                    Identifier.of(ImMovensMod.MOD_ID, name),
+                    multiplier - 1f,
                     EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
             );
         }
 
         public EntityAttributeModifier getModifier() {
-            return genericModifier;
+            return modifier;
         }
 
         public static GenericState getSeverityState(int severity) {
