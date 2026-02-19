@@ -8,7 +8,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.btwr.im_movens.ImMovensMod;
@@ -83,6 +82,7 @@ public class PlayerEffectsManager {
         }
     }
 
+    /**
     private void updateAttributes(PlayerEntity player) {
         StatusEffectUtils.GenericState newState = StatusEffectUtils.GenericState.getStateFromPlayerStats(player);
         StatusEffectUtils.GenericState oldState = lastState.getOrDefault(player.getUuid(), StatusEffectUtils.GenericState.NORMAL);
@@ -113,15 +113,70 @@ public class PlayerEffectsManager {
         if (dmg != null) dmg.removeModifier(oldMod);
 
         // Add new modifier
-        if (move != null) move.addPersistentModifier(newMod);
-        if (breakSpd != null) breakSpd.addPersistentModifier(newMod);
-        if (dmg != null) dmg.addPersistentModifier(newMod);
+        if (move != null && !move.hasModifier(newMod.id())) move.addPersistentModifier(newMod);
+        if (breakSpd != null && !breakSpd.hasModifier(newMod.id())) breakSpd.addPersistentModifier(newMod);
+        if (dmg != null && !dmg.hasModifier(newMod.id())) dmg.addPersistentModifier(newMod);
 
         // Remember new state
         lastState.put(player.getUuid(), newState);
 
         setNextDistToHurtSound(player);
     }
+     **/
+
+    private void updateAttributes(PlayerEntity player) {
+        StatusEffectUtils.GenericState newState = StatusEffectUtils.GenericState.getStateFromPlayerStats(player);
+
+        // Player should not be affected -> remove everything
+        if (!shouldBeAffected(player)) {
+            removeAllStateModifiers(player);
+            lastState.put(player.getUuid(), StatusEffectUtils.GenericState.NORMAL);
+            return;
+        }
+
+        // Attributes
+        EntityAttributeInstance move = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        EntityAttributeInstance breakSpd = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
+        EntityAttributeInstance dmg = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+
+        // Remove all GenericState modifiers
+        for (StatusEffectUtils.GenericState state : StatusEffectUtils.GenericState.values()) {
+            EntityAttributeModifier mod = state.getModifier();
+            if (mod == null) continue; // skip NORMAL
+
+            if (move != null) move.removeModifier(mod.id());
+            if (breakSpd != null) breakSpd.removeModifier(mod.id());
+            if (dmg != null) dmg.removeModifier(mod.id());
+        }
+
+        // Add a new modifier if not NORMAL
+        EntityAttributeModifier newMod = newState.getModifier();
+        if (newMod != null) {
+            if (move != null && !move.hasModifier(newMod.id())) move.addPersistentModifier(newMod);
+            if (breakSpd != null && !breakSpd.hasModifier(newMod.id())) breakSpd.addPersistentModifier(newMod);
+            if (dmg != null && !dmg.hasModifier(newMod.id())) dmg.addPersistentModifier(newMod);
+        }
+
+        // Update lastState map
+        lastState.put(player.getUuid(), newState);
+
+        setNextDistToHurtSound(player);
+    }
+
+    /**
+    private void removeAllStateModifiers(PlayerEntity player) {
+        EntityAttributeInstance move = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        EntityAttributeInstance breakSpd = player.getAttributeInstance(EntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
+        EntityAttributeInstance dmg = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+
+        for (StatusEffectUtils.GenericState state : StatusEffectUtils.GenericState.values()) {
+            EntityAttributeModifier mod = state.getModifier();
+            if (move != null) move.removeModifier(mod);
+            if (breakSpd != null) breakSpd.removeModifier(mod);
+            if (dmg != null) dmg.removeModifier(mod);
+        }
+    }
+     **/
 
     private void removeAllStateModifiers(PlayerEntity player) {
         EntityAttributeInstance move = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
@@ -129,10 +184,12 @@ public class PlayerEffectsManager {
         EntityAttributeInstance dmg = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 
         for (StatusEffectUtils.GenericState state : StatusEffectUtils.GenericState.values()) {
-            EntityAttributeModifier m = state.getModifier();
-            if (move != null) move.removeModifier(m);
-            if (breakSpd != null) breakSpd.removeModifier(m);
-            if (dmg != null) dmg.removeModifier(m);
+            EntityAttributeModifier mod = state.getModifier();
+            if (mod == null) continue; // skip NORMAL
+
+            if (move != null) move.removeModifier(mod.id());
+            if (breakSpd != null) breakSpd.removeModifier(mod.id());
+            if (dmg != null) dmg.removeModifier(mod.id());
         }
     }
 

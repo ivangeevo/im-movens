@@ -1,4 +1,5 @@
-## v???(dev)
+## v0.8.3
++ Fixed (hopefully) an issue with the game crashing with a message "Modifier is already applied for this attribute". You might need to enter a new world first before being able to enter your existing worlds that had the crash
 + Updated the mod to BTWR: Shared Library 0.7
 
 ## v0.8.2

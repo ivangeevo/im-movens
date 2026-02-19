@@ -13,17 +13,21 @@ public class StatusEffectUtils {
         SEVERE(0.25f, "severe_mod"),
         MAJOR(0.50f, "major_mod"),
         MINOR(0.75f, "minor_mod"),
-        NORMAL(1.00f, "normal_mod");
+        NORMAL(1.00f, null);
 
         private final EntityAttributeModifier modifier;
 
-
         GenericState(float multiplier, String name) {
-            this.modifier = new EntityAttributeModifier(
-                    Identifier.of(ImMovensMod.MOD_ID, name),
-                    multiplier - 1f,
-                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-            );
+            if (name == null) {
+                this.modifier = null;
+            }
+            else {
+                this.modifier = new EntityAttributeModifier(
+                        Identifier.of(ImMovensMod.MOD_ID, name),
+                        multiplier - 1f,
+                        EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                );
+            }
         }
 
         public EntityAttributeModifier getModifier() {
